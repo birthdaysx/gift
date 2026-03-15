@@ -87,7 +87,6 @@
 
         @keyframes pulse {
             from { transform: scale(1); text-shadow: 0 0 10px #fff; }
-            /* UBAH: Warna shadow jadi Baby Blue */
             to { transform: scale(1.05); text-shadow: 0 0 30px #89CFF0; }
         }
 
@@ -99,7 +98,7 @@
             user-select: none;
             animation: wobble 2s infinite ease-in-out;
             transition: transform 0.3s;
-            filter: drop-shadow(0 0 20px rgba(137, 207, 240, 0.4)); /* UBAH: Shadow biru muda */
+            filter: drop-shadow(0 0 20px rgba(137, 207, 240, 0.4)); 
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -114,7 +113,6 @@
             background: transparent;
         }
 
-        /* UBAH: Tambahkan ID dan CSS khusus untuk teks wishes agar bisa dikontrol opacity-nya */
         #wishes-hint-text {
             position: fixed; 
             top: 20px; 
@@ -123,7 +121,7 @@
             font-size: 14px; 
             animation: pulse 1s infinite alternate; 
             pointer-events: none;
-            opacity: 0; /* Awalnya 0, muncul via JS setelah ledakan */
+            opacity: 0; 
             transition: opacity 1s ease-in;
         }
 
@@ -155,11 +153,10 @@
         .photo-gallery {
             position: relative;
             width: 100%;
-            /* UBAH: Max width agar di laptop tidak terlalu menyebar */
             max-width: 900px; 
-            height: 600px;
+            height: 450px; /* DIUBAH: Dikurangi dari 600px agar pesan naik */
             flex-shrink: 0;
-            margin: 0 auto; /* Tengah secara horizontal */
+            margin: 0 auto; 
         }
 
         .photo-item {
@@ -182,11 +179,6 @@
             z-index: 50;
         }
 
-        /* FIX: Tambahkan rule khusus untuk foto ke-5 agar tetap di tengah saat di-hover */
-        .photo-5:hover {
-            transform: translateX(-50%) scale(1.1) rotate(0deg) !important;
-        }
-
         .photo-item img {
             width: 100%;
             height: 180px;
@@ -195,44 +187,22 @@
         }
 
         /* --- POSISI FOTO YANG LEBIH RAPIH & TENGAH (DESKTOP) --- */
-        /* Foto 1 (Kiri Atas - Agak Masuk) */
         .photo-1.reveal { top: 10%; left: 15%; transform: rotate(-12deg); }
-        
-        /* Foto 2 (Kanan Atas - Agak Masuk) */
         .photo-2.reveal { top: 5%; right: 15%; transform: rotate(8deg); }
-        
-        /* Foto 3 (Kiri Tengah - Agak Masuk) */
         .photo-3.reveal { top: 40%; left: 20%; transform: rotate(5deg); }
-        
-        /* Foto 4 (Kanan Tengah - Agak Masuk) */
         .photo-4.reveal { top: 35%; right: 20%; transform: rotate(-8deg); }
-        
-        /* Foto 5 (Tengah Bawah - Benar-benar di tengah) */
-        .photo-5.reveal { 
-            top: 60%; 
-            left: 50%; 
-            /* TranslateX -50% memastikan titik tengah foto ada di garis tengah layar */
-            transform: translateX(-50%) rotate(2deg); 
-        }
 
         /* --- RESPONSIF UNTUK HP (MOBILE) --- */
         @media (max-width: 768px) {
-            .photo-gallery { height: 500px; }
+            .photo-gallery { height: 350px; } /* DIUBAH: Dikurangi dari 500px agar pesan lebih naik di HP */
             .photo-item { width: 130px; }
             .photo-item img { height: 130px; }
             
-            /* Posisi Mobile yang lebih rapih */
+            /* Posisi Mobile */
             .photo-1.reveal { top: 5%; left: 8%; transform: rotate(-10deg); }
             .photo-2.reveal { top: 8%; right: 8%; transform: rotate(8deg); }
             .photo-3.reveal { top: 35%; left: 5%; transform: rotate(5deg); }
             .photo-4.reveal { top: 38%; right: 5%; transform: rotate(-10deg); }
-            
-            /* Foto 5 di HP tetap di tengah */
-            .photo-5.reveal { 
-                top: 65%; 
-                left: 50%; 
-                transform: translateX(-50%) rotate(-3deg); 
-            }
         }
 
         .message-card {
@@ -260,11 +230,9 @@
             transform: scale(1) translateY(0);
         }
 
-        /* UBAH: Warna Judul Pesan jadi Baby Blue */
         .message-card h2 { color: #89CFF0; margin-bottom: 15px; font-size: 1.8rem; }
         .message-card p { font-size: 1.05rem; line-height: 1.6; color: #fff; }
         
-        /* UBAH: Warna Tombol Transisi jadi Baby Blue */
         .transition-btn { 
             margin-top: 25px; 
             padding: 10px 20px;
@@ -276,7 +244,7 @@
             font-weight: bold;
             box-shadow: 0 0 15px rgba(137, 207, 240, 0.5);
             transition: all 0.3s;
-            opacity: 0; /* Muncul setelah teks selesai */
+            opacity: 0; 
         }
         .transition-btn:hover {
             background: white;
@@ -284,7 +252,6 @@
             box-shadow: 0 0 20px white;
         }
 
-        /* UBAH: Warna Kursor Ketik jadi Baby Blue */
         #typing-text::after {
             content: '|';
             animation: blink 0.7s infinite;
@@ -309,7 +276,6 @@
             60% {transform: translateY(-5px);}
         }
 
-        /* Credit style (muncul di akhir matrix) */
         #credit-text {
             position: fixed;
             bottom: 20px;
@@ -321,10 +287,9 @@
             pointer-events: none;
         }
 
-        /* --- LINK GAMBAR AKHIR --- */
         #final-link {
             position: fixed;
-            bottom: 15%; /* Jarak dari bawah layar */
+            bottom: 15%; 
             left: 50%;
             transform: translateX(-50%);
             z-index: 100;
@@ -338,8 +303,8 @@
             width: 120px;
             height: 120px;
             object-fit: cover;
-            border-radius: 50%; /* Membuat gambar jadi bundar */
-            border: 3px solid #89CFF0; /* UBAH: Warna border Baby Blue */
+            border-radius: 50%; 
+            border: 3px solid #89CFF0; 
             box-shadow: 0 0 20px rgba(137, 207, 240, 0.6);
             transition: transform 0.3s;
         }
@@ -351,7 +316,7 @@
             color: white;
             font-size: 14px;
             margin-top: 10px;
-            text-shadow: 0 0 5px #89CFF0; /* UBAH: Text shadow Baby Blue */
+            text-shadow: 0 0 5px #89CFF0; 
             animation: pulse 1s infinite alternate;
         }
         #final-link.show {
@@ -361,15 +326,11 @@
     </style>
 </head>
 <body>
-    <!-- LAGU (Hanya 1 tag audio dari awal sampai akhir) -->
     <audio id="birthday-music" loop preload="auto">
         <source src="https://birthdaysx.github.io/Musik/senja-disudut-kota.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Canvas 1: Kembang Api -->
     <canvas id="canvas-fireworks"></canvas>
-    
-    <!-- Canvas 2: Efek Matrix (Kejutan Akhir) --> 
     <canvas id="canvas-matrix"></canvas>
  
     <!-- HALAMAN 1 -->
@@ -381,7 +342,6 @@
 
     <!-- HALAMAN 2 -->
     <div id="page-2" class="page hidden">
-        <!-- UBAH: Diberikan ID khusus wishes-hint-text -->
         <div id="wishes-hint-text">
             ✨ Klik 7x layar untuk lihat semua Wishes ✨
         </div>
@@ -390,12 +350,12 @@
 
     <!-- HALAMAN 3 -->
     <div id="page-3" class="page hidden">
+        <!-- DIUBAH: Hapus photo-5 sehingga hanya sisa 4 foto -->
         <div class="photo-gallery">
             <div class="photo-item photo-1"><img src="https://birthdaysx.github.io/Foto4/i1.jpeg" alt="Momen 1"></div>
             <div class="photo-item photo-2"><img src="https://birthdaysx.github.io/Foto4/i2.jpeg" alt="Momen 2"></div>
             <div class="photo-item photo-3"><img src="https://birthdaysx.github.io/Foto4/i3.jpeg" alt="Momen 3"></div>
             <div class="photo-item photo-4"><img src="https://birthdaysx.github.io/Foto4/i4.jpeg" alt="Momen 4"></div>
-            <div class="photo-item photo-5"><img src="https://birthdaysx.github.io/Foto4/i5.jpeg" alt="Momen 5"></div>
         </div> 
 
         <div id="scroll-hint" class="scroll-hint">Scroll kebawah ya sayangg.. 👇</div>
@@ -404,17 +364,14 @@
             <h2>Happy Birthday<br>Magita Iswandi🩵</h2>  
             <p id="typing-text"></p> 
             <p style="font-style: italic; margin-top: 15px;">from mee boii👶</p> 
-            <!-- Tombol Transisi ke Matrix -->
             <button class="transition-btn" id="to-matrix-btn">Ada satu kejutan lagi...</button>
         </div>
     </div>
  
     <div id="credit-text">🩵</div>
  
-    <!-- ELEMEN GAMBAR LINK (MUNCUL DI AKHIR MATRIX) -->
-    <!-- Ganti href dengan link tujuan (misal: link WhatsApp atau YouTube) -->
+    <!-- ELEMEN GAMBAR LINK -->
     <a id="final-link" href="https://open.spotify.com/track/0tgVpDi06FyKpA1z0VMD4v" target="_blank" title="Klik untuk menuju link">
-        <!-- Ganti src dengan link gambar yang kamu inginkan -->
         <img src="https://birthdaysx.github.io/Foto4/i5.jpeg" alt="Klik Gambar Ini">
         <p>Klik Gambar Ini ✨</p> 
     </a>  
@@ -431,7 +388,6 @@
 
         let width, height;
 
-        // Kontrol Status Main Loop & Matrix State (Pindahkan ke atas agar tidak ada ReferenceError saat resize)
         let runFireworks = false;
         let runMatrix = false;
         let m_state = "SWEEP"; 
@@ -444,7 +400,6 @@
             canvasM.width = width;
             canvasM.height = height;
             
-            // Re-init variables untuk matrix kalau diresize
             if(runMatrix && m_state !== "SWEEP" && typeof initMatrixCanvas === 'function') {
                 initMatrixCanvas();
             }
@@ -522,7 +477,6 @@
                 this.acceleration = isCinematic ? 1.028   : 1.1; 
                 this.velocityUnit = { x: Math.cos(angle), y: Math.sin(angle) };
                 this.hue = isCinematic ? 0 : random(0, 360);
-                // UBAH: Warna Laser Cinematic jadi Putih kebiruan
                 this.color = isCinematic ? '#E0FFFF' : `hsl(${this.hue}, 100%, 70%)`;
             }
             draw() {
@@ -548,13 +502,11 @@
             explode() {
                 if (this.isCinematic) { 
                     for (let i = 0; i < 280; i++) {
-                        // UBAH: Warna partikel ledakan utama jadi Baby Blue (#89CFF0)
                         fw_particles.push(new SharpParticle(this.x, this.y, `#89CFF0`, true));
                     }
                     setTimeout(() => createTextParticles(["MAGITA","ISWANDI"], this.x, this.y, "#ffffff"), 1);
                     fw_cinematicDone = true;
                     
-                    // UBAH: Teks Wishes muncul SETELAH ledakan utama
                     setTimeout(() => {
                         document.getElementById('wishes-hint-text').style.opacity = '1';
                     }, 1000);
@@ -657,7 +609,6 @@
                 this.destX = targetX;
                 this.destY = targetY;
                 
-                // UBAH: Warna partikel Matrix Ripple jadi Baby Blue
                 this.color = (type === "ripple") ? "137, 207, 240" : "255, 255, 255"; 
                 this.active = true;
                 this.opacity = (type === "ripple") ? 0 : 1.0;
@@ -854,9 +805,8 @@
             m_isExploding = false;
             
             m_state = "FINAL_HEART";
-            document.getElementById('credit-text').style.display = 'block'; // Tampilkan credit
+            document.getElementById('credit-text').style.display = 'block';
 
-            // TAMPILKAN GAMBAR LINK SETELAH 1.5 DETIK
             setTimeout(() => {
                 document.getElementById('final-link').classList.add('show');
             }, 1500); 
@@ -881,7 +831,6 @@
                         const distFromEdge = currentLimit - j;
                         if (distFromEdge < 15) {
                             const op = 1 - (distFromEdge / 15);
-                            // UBAH: Warna teks Matrix Sweep jadi Baby Blue
                             ctxM.fillStyle = `rgba(137, 207, 240, ${op * 0.6})`;
                             ctxM.fillText(m_gridChars[i][j], i * m_fontSize, j * m_fontSize);
                         }
@@ -897,7 +846,6 @@
                     for (let j = 0; j < 10; j++) {
                         const r = currentRow - j;
                         if (r >= 0 && r < m_rows) {
-                            // UBAH: Warna Hujan Matrix jadi Baby Blue
                             ctxM.fillStyle = `rgba(137, 207, 240, ${0.2 * (1 - j/10)})`;
                             ctxM.fillText(m_gridChars[i][r], i * m_fontSize, r * m_fontSize);
                         }
@@ -910,20 +858,14 @@
             if (m_state === "FINAL_HEART") {
                 if (m_textOpacity < 1) m_textOpacity += 0.01;
                 
-                // Menentukan ukuran font
                 const fontSize = Math.min(width / 24, 26);
                 ctxM.font = `bold ${fontSize}px "Comic Sans MS", cursive`;
                 ctxM.textAlign = 'center'; 
                 ctxM.textBaseline = 'middle';
                 ctxM.fillStyle = `rgba(255, 255, 255, ${m_textOpacity})`;
 
-                // Jarak antar baris
                 const lineHeight = fontSize * 1.5; 
-
-                // Baris 1 (Posisi sedikit di atas tengah)
                 ctxM.fillText("i'm always proud of you", width / 2, (height / 2) - (lineHeight / 2));
-                
-                // Baris 2 (Posisi sedikit di bawah tengah)
                 ctxM.fillText("and i love you🩵", width / 2, (height / 2) + (lineHeight / 2));
             }
         }
@@ -954,7 +896,6 @@
            BAGIAN 3: ALUR INTERAKSI & TRANSISI
            ========================================= */
 
-        // Fungsi Animasi Mengetik
         function typeWriter(text, elementId, speed, callback) {
             let i = 0;
             const element = document.getElementById(elementId);
@@ -979,7 +920,6 @@
             
             document.getElementById('page-1').classList.add('hidden');
             
-            // Mulai Fireworks
             canvasFw.style.display = 'block';
             document.getElementById('page-2').classList.remove('hidden');
             
@@ -990,7 +930,7 @@
             }, 500);
         });
 
-        // Event Klik Layar untuk memunculkan harapan saat kembang api
+        // Event Klik Layar untuk memunculkan harapan
         window.addEventListener('pointerdown', (e) => {
             if (runFireworks && fw_cinematicDone && e.target.id !== 'next-page-btn' && e.target.id !== 'to-matrix-btn') {
                 const text = wishes[wishIndex];
@@ -1007,20 +947,17 @@
             document.getElementById('page-3').classList.remove('hidden');
             document.body.style.overflowY = "auto";
             
-            // Animasi foto muncul
             const photoItems = document.querySelectorAll('.photo-item');
             photoItems.forEach((item, i) => {
                 setTimeout(() => item.classList.add('reveal'), i * 300);
             });
 
-            // Animasi Kartu Pesan dan Ngetik
             setTimeout(() => {
                 document.getElementById('message-card').classList.add('reveal');
                 if(window.innerWidth < 768) document.getElementById('scroll-hint').style.display = 'block';
                 
                 setTimeout(() => {
                     typeWriter(messageToType, "typing-text", 50, () => {
-                        // Munculkan tombol ke matrix SETELAH teks selesai diketik
                         const toMatrixBtn = document.getElementById('to-matrix-btn');
                         toMatrixBtn.style.opacity = '1';
                     });
@@ -1032,28 +969,23 @@
         document.getElementById('to-matrix-btn').onclick = (e) => {
             e.stopPropagation();
             
-            // 1. Fade out halaman pesan dan foto
             document.getElementById('page-3').style.opacity = '0';
             
-            // 2. Fade out layer kembang api, Fade in layer matrix
             canvasFw.style.opacity = '0';
             canvasM.style.opacity = '1';
-            canvasM.style.pointerEvents = 'auto'; // Agar bisa diklik kalau perlu
+            canvasM.style.pointerEvents = 'auto'; 
             
-            // Mencegah scroll
             document.body.style.overflowY = "hidden";
 
             setTimeout(() => {
-                // Sembunyikan elemen lama sepenuhnya agar tidak membebani memori
                 document.getElementById('page-3').style.display = 'none';
-                runFireworks = false; // Matikan loop animasi kembang api
+                runFireworks = false; 
                 canvasFw.style.display = 'none';
                 
-                // Mulai sequence Matrix
                 initMatrixCanvas();
                 runMatrix = true;
                 animateMatrix();
-            }, 1500); // Tunggu sampai transisi CSS (fade out) selesai
+            }, 1500);
         };
 
     </script>
