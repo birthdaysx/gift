@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Pacifico&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dear Tataa ^^❤</title>
+    <style>
+        :root { 
+            --pink-soft: #ffb6b6;
+            --pink-bright: #ffc8c8;
+            --text-color: #555;
+            --accent-pink: #ff7d7d;  
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(to bottom, var(--pink-soft), var(--pink-bright));
+            overflow: hidden;
+            color: var(--text-color);
+        }
+
+        /* Hujan Emoticon */
+        .emoji-rain {
+            position: fixed;
+            top: -10%;
+            z-index: 0;
+            user-select: none;
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        /* Container Utama */
+        #content-container {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Kotak Konten (Glassmorphism Effect) */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 30px 20px;
+            box-shadow: 0 8px 32px 0 rgba(22, 22, 22, 0.2);
+            border: 2px solid rgba(255, 145, 145, 0.4);
+            max-width: 400px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .page {
+            display: none;
+            width: 100%;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Media */
+        .sticker-gif {
+            width: 160px;
+            height: auto; 
+            margin-bottom: 1px;
+        }
+
+        .photo-frame {
+            width: 200px;
+            border-radius: 15px;
+            border: 5px solid white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+        }
+
+        .photo-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .photo-small {
+            width: 130px;
+        }
+
+        /* Kalender Mini */
+        .calendar {
+            background: white;
+            border-radius: 10px;
+            padding: 10px;
+            width: 200px;
+            margin: 15px auto;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            font-size: 0.8rem;
+        }
+        .calendar-header {
+            font-weight: bold;
+            color: var(--accent-pink);
+            margin-bottom: 5px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+        }
+        .day {
+            padding: 5px 0;
+            position: relative;
+            z-index: 1;
+        }
+        .today-heart {
+            position: absolute;
+            top: 58%;  
+            left: 50%;
+            transform: translate(-50%, -50%); 
+            width: 32px;
+            height: 32px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ff7d7d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z'%3E%3C/path%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat; 
+            background-position: center;
+            animation: heartScale 0.8s ease-out forwards;
+            animation-delay: 1s;
+            opacity: 0;
+            z-index: -1;
+        }
+        @keyframes heartScale {
+            from { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+            to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        /* Tulisan */
+        h1 { font-size: 1.3rem; margin: 1px 0; color: #444; }
+        h3 { font-size: 1rem; color: #555; }
+        p { font-size: 0.95rem; margin: 1px 0; line-height: 1.5; font-weight: bold;}
+        
+        /* Tombol */
+        button { 
+            background-color: var(--accent-pink);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(95, 95, 95, 0.3);
+            transition: 0.3s;
+        }
+
+        button:hover { transform: scale(1.05); background-color: #fcb6b6; }
+
+        /* Watermark */
+        #watermark {
+            position: fixed;
+            bottom: 10px;
+            right: 15px;
+            font-size: 0.7rem;
+            color: rgba(0, 0, 0, 0.3);
+            animation: blink 3s infinite;
+            z-index: 100;
+            text-align: right;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Typewriter Page */
+        #typewriter {
+            font-size: 0.85rem;
+            white-space: pre-wrap;
+            text-align: left;
+            max-width: 100%;
+            height: 250px;
+            overflow-y: auto;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 15px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop>
+        <source src="https://birthdaysx.github.io/Musik/only-leehi.mp3" type="audio/mpeg">
+    </audio>
+
+    <div style="font-family: 'Lucida Calligraphy', cursive;" id="watermark">from ur belove<3</div>
+
+    <div id="content-container">   
+        <div class="glass-card">
+             
+            <div class="page active" id="p1"> 
+                <img src="https://media.tenor.com/U-795QTR5fgAAAAi/brown-and.gif" class="sticker-gif"> 
+                <h1>HALOOO<br>SAYANGNYAAA APIII<br>（☆/＞u＜/）</h1> 
+                <p>Adaa sesuatuu yangg spesiall yaa harii inii buatt kitaa berduaa ^^ Ayangg tekann teruss yaa biarr bisaa liatt semuanyaa🤍🤍🤍</p>
+                <button onclick="nextPage(1)">Lanjutt <3</button>
+            </div>
+
+            <div class="page" id="p2">
+                <div class="calendar">
+                    <div class="calendar-header" id="monthLabel">Month 202X</div>
+                    <div class="calendar-grid" id="calendarGrid">
+                        <!-- Grid generated by JS -->
+                    </div>
+                </div>
+                <p>Nii lagii bulann Marett naa, auu tauu kann inii bulann apaa. Iyaa tauu bulann Ramadhann tapii bukann ituu wkwkw, tapii bulann ini spesiall kalii buatt kitaa berduaa sayangg, terutamaa di tanggal 26 inii. </p>
+                <button onclick="nextPage(2)">Lanjutt Bubb ^^</button>
+            </div>
+
+            <div class="page" id="p3">
+                <img src="https://media.tenor.com/wj79cGO_znAAAAAi/brown-bear-cony.gif" class="sticker-gif">
+                <p>Walaupun tahun inii kitaa jugaa gabisaa adaa di tempat yang samaa pas di Hari Spesial inii tapii gapapaa kokk, masii banyakk caraa lainn untukk rayainnyaa sayangg. Nahh salahh satunyaa apiii rayainn dalamm bentukk yang belum pernahh apii bikinn, darii website inii🤍🤍🤍 Ayangg bacaa betoll betoll yaaa^^</p>
+                <button onclick="nextPage(3)">Jan capekk nekann ^^<3</button>  
+            </div>
+
+            <div class="page" id="p4">
+                <img src="https://media.tenor.com/MlLNYTHHn6cAAAAi/love-kiss.gif" class="sticker-gif">
+                <p>Yodahh nii yangg terakhirr yaa sayangg, sekarangg masukk kitaa ke kataa kataa nyaa duluu wkakww. Auu tauu ndakk sii sebenarnyaa hari nii harii apaaa :)) Lupaa nantii auuu, soalnyaa pass telponann daritadii gadaa auu bahasss wkwkwa. Yodahh lanjutt yaa syaanggg, jangann maluu auu bacanyaa </p> 
+                <p></p>
+                <button onclick="nextPage(4)">Open it....^^</button>   
+            </div>
+
+            <div class="page" id="p5"> 
+                <img src="https://birthdaysx.github.io/Foto4/aa1.jpeg" class="photo-frame"> 
+                <h3>Di harii Jumat 26 Maret 2021, apii beraniinn dirii apii sayangg untukk yang keduaa kalii buatt nyobaa bikinn tataaa jadii bagiann hidupp apii🤍🤍🤍 Seremm sebenarnyaa nungguu jawaban tataaa tuu, tapii ternyataaa ayangg mauu naa🤍🤍🤍🤍</h3>
+                <p class="text">Yaa walaupunn saat ituu jugaa lagi Covidd kann jadii belumm adaa Date barengg barengg kitaa :)) Tapii takpeee jadinyaa kann kitaa seringg jalan jalann jugaaa nantinyaaa</p>
+                <button onclick="nextPage(5)">Lanjuttt ^^</button> 
+            </div>
+
+            <div class="page" id="p6">
+                <div class="photo-group">
+                    <img src="https://birthdaysx.github.io/Foto4/aa2.jpeg" class="photo-frame photo-small"> 
+                    <img src="https://birthdaysx.github.io/Foto4/aa3.jpeg" class="photo-frame photo-small"> 
+                </div>
+                <h3>Tiapp harii kitaa ngelewatinn waktuu samaa samaa berduaa, dengann kitaa yang samaa samaa gadaa pengalamann pacarann :))) Walaupunnn caraa apiii ngajakk auu Date duluu anehh, jangannn ilfeel samaa apii yaa syaanggg karenaa Ayangg tuu oranggg pertamaa bagii apii (dann jadii yangg terakhirr jugaa bagii apii dann Tataa jugaa)🤍🤍🤍🤍</h3>
+                <p class="text">Walaupunn apiii banyakk kali bikinnn tataa kesell, bikinn tataaa marahh, ngambekk, tetepp sayangg teruss yaa byy samaaa apii🤍🤍🤍 Karnaa apii jugaa bakall berusahaa teruss untukk tetepp bikinn tataaa cintaa samaa apii teruss🤍🤍🤍🤍</p>
+                <button onclick="nextPage(6)">Next cintaa ^^</button> 
+            </div>
+
+            <div class="page" id="p7"> 
+                <img src="https://birthdaysx.github.io/Foto4/aa4.jpeg" class="photo-frame"> 
+                <h3>Semogaa di Hari Spesial inii kitaa bisaa saling percaya kalauu kitaa kedepannyaa bakall samaa teruss cintaa, walaupunn kedepannyaa gatauu kann adaa sesuatuu yangg mungkinn ngehambatt hubungann kitaa. Tapii apii yakinn kokk apii bakall terusss sayangg samaa tataaa, dann tataaa gituu jugaa ke apiii🤍🤍🤍🤍<br>Karenaa apii tuu dahh janjii bakall bawaa tataaa ke tahapp "ituu"</h3>
+                <p class="text">Inii adaa sesuatuu ucapann untukk tataaa, dahh bisaa nebakk kann harii nii harii apaa sayangg😝😝 Yodahhh dibacaaa yaaa cintaaa🤍🤍🤍🤍</p>
+                <button onclick="nextPage(7)">Dear Tataa ^^</button>
+            </div>
+ 
+            <div class="page" id="p8">
+                <img src="https://birthdaysx.github.io/Foto4/aa5.jpeg" class="sticker-gif">  
+                <h1 style="font-size: 1.1rem;">🖤🤍💙🩶🤎💜HAPPYY ANNIVERSARYYY SAYANGGGGKUUU🤍🖤🩷💚❤️💙<br>(∩´∀`∩)💕</h1> 
+                <div id="typewriter"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Konfigurasi Emoticon
+        const emojis = ['💖', '🧸', '🎀', '🌸', '✨'];
+        
+        function createEmoji() {
+            const e = document.createElement('div');
+            e.className = 'emoji-rain';
+            e.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+            e.style.left = Math.random() * 100 + 'vw';
+            e.style.animationDuration = Math.random() * 3 + 2 + 's';
+            e.style.fontSize = Math.random() * 20 + 10 + 'px';
+            document.body.appendChild(e);
+            setTimeout(() => e.remove(), 5000);
+        }
+        setInterval(createEmoji, 300);
+
+        // Generate Calendar Logic
+        function generateCalendar() {
+            const now = new Date();
+            const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+            document.getElementById('monthLabel').innerText = "Maret 2026";  //`${monthNames[now.getMonth()]} ${now.getFullYear()}`;
+            
+            const grid = document.getElementById('calendarGrid');  
+            const targetDay = 26; // Tanggal hari ini yang akan dilingkari
+            
+            // Dummy days for visual 
+            for(let i = 1; i <= 31; i++) { 
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'day';
+                dayDiv.innerText = i;
+                if(i === targetDay) {
+                    const heart = document.createElement('div');
+                    heart.className = 'today-heart';
+                    dayDiv.appendChild(heart);
+                    dayDiv.style.fontWeight = 'bold';
+                    dayDiv.style.color = 'var(--accent-pink)';
+                }
+                grid.appendChild(dayDiv);
+            }
+        }
+        generateCalendar();
+
+        // Navigasi Halaman
+        function nextPage(current) {
+            if(current === 1) {
+                document.getElementById('bgMusic').play().catch(() => {});
+            }
+            if(current === 7) {
+                confetti({
+                    particleCount: 150,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#ffafbd', '#ffc3a0', '#ff6b81', '#ffffff']
+                });
+            }
+
+            document.getElementById('p' + current).classList.remove('active');
+            const next = current + 1;
+            document.getElementById('p' + next).classList.add('active');
+
+            if(next === 8) {
+                startTypewriter();
+            }
+        } 
+
+        // Efek Mengetik
+        const text = `Selamatt Harii Anniversary kitaa yang ke 5 Tahunn yaa sayangg💕💞💓💗 Gaa terasaa ajaa udah 5 tahunn kitaa samaa samaa teruss byyy :)) Bisaa dibilangg mungkinn 5 tahunn ini baruu tahapp awall sayangg bagii kitaa berduaa cintaaa🤍🤍🤍 Masihh panjangg lagii perjalanann kitaa naa kedepannyaa nantii, dengann kitaaa yangg haruss selesainn kuliah dulu, kejarr citaa citaa kitaa duluuu, dann kalauu apii samaa tataaa dahb siapp, apiii bakall lamarrr tataaa🤍🤍🤍🤍 Percayaa samaa apii yaa syaanggg, apiii bakall bahagiainnn tataaa, gaakann apii bikinn hidupp tataaa menderitaaa🖤🖤🖤🖤🖤
+Makasihh yaa udahh mauu hadirr di hidupp apii syaangg, nemeninnn apiii, mauu pigii kemanaa manaa teruss samaa apiii🤍🤍🤍🤍 Dan jugaa apiii mauu mintaa maaff kalauu darii awall awall ketemuu samaa tataaa sampaiii harii inii masii seringg bikinn tataaa kesell, jarangg mauu dengerr nasehatt tataaa :(( Bikinn tataa nyaa marahh terusss, dann jugaa kesalahann besarr lainnyaa :(( Tapiii apiii kedepannyaa bakall belajarr darii kesalahann ituu syaangg, dann kedepannyaa apii bakall kurangiii yaa cibtaaa🤍🤍🤍🤍
+Apiii selaluuu sayangg samaa tataaa, darii kitaa masii mudaa, remajaa, sampaii dewasaa dann menuaa nantii nyaa💞💞 Semogaa tahunn tahunn kedepannyaa kitaa makinn romantiss, makinn syaangg satuu samaa lainnn🤍🤍🤍🤍
+Jangann bosennn samaa apiii yaa syaanggg, percayaa sama apiii yaa🤍🤍🤍🤍🤍 Samaa maaff ugaa tadii malammm bikinn tataaa ngambekk naa hehee
+
+`; 
+
+        // (Biarkan kosong di bawah 'sayang' agar ada jeda baris)
+
+        function startTypewriter() {
+            let i = 0;
+            const target = document.getElementById("typewriter");
+            target.innerHTML = ""; // Bersihkan teks sebelumnya
+            
+            function type() {
+                if (i < text.length) {
+                    // Mengetik karakter biasa
+                    target.innerHTML += text.charAt(i);
+                    i++;
+                    target.scrollTop = target.scrollHeight; // Auto scroll ke bawah
+                    setTimeout(type, 50); // Kecepatan mengetik
+                } else {
+                    // 2. KETIKA KETIKAN SELESAI, TAMBAHKAN TEKS BOLD INI
+                    target.innerHTML += "<strong>I Love You forever🤍<br>-apii ^^</strong>";  
+                    target.scrollTop = target.scrollHeight; // Pastikan scroll tetap di bawah
+                }
+            } 
+            type();
+        }
+    </script>
+</body>
+</html>
