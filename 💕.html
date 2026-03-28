@@ -252,7 +252,7 @@
 <body>
     <!-- AUDIO BACKGROUND -->
     <audio id="birthday-music" loop preload="auto">
-        <source src="https://birthdaysx.github.io/Musik/risk-it-all-reff.mp3" type="audio/mpeg">    
+        <source src="https://birthdaysx.github.io/Musik/my-love.mp3" type="audio/mpeg">     
     </audio>
 
     <canvas id="canvas"></canvas>       
@@ -272,25 +272,25 @@
         <button id="next-page-btn">Lihat Kejutan Spesial ✨</button>  
     </div> 
  
-    <!-- HALAMAN 3 (GALERI FOTO & VIDEO) -->
+    <!-- HALAMAN 3 (GALERI FOTO & VIDEO) --> 
     <div id="page-3" class="page hidden">    
          
         <div class="photo-gallery">  
-            <div class="photo-item photo-1"><img src="https://birthdaysx.github.io/Foto4/cc1.jpeg" alt="Momen 1"></div> 
-            <div class="photo-item photo-2"><img src="https://birthdaysx.github.io/Foto4/cc2.jpeg" alt="Momen 2"></div>
-            <div class="photo-item photo-3"><img src="https://birthdaysx.github.io/Foto4/cc3.jpeg" alt="Momen 3"></div> 
-            <div class="photo-item photo-4"><img src="https://birthdaysx.github.io/Foto4/cc4.jpeg" alt="Momen 4"></div> 
-            <div class="photo-item photo-5"><img src="https://birthdaysx.github.io/Foto4/cc5.jpeg" alt="Momen 5"></div> 
+            <div class="photo-item photo-1"><img src="https://birthdaysx.github.io/Foto4/ff1.jpeg" alt="Momen 1"></div> 
+            <div class="photo-item photo-2"><img src="https://birthdaysx.github.io/Foto4/ff2.jpeg" alt="Momen 2"></div>
+            <div class="photo-item photo-3"><img src="https://birthdaysx.github.io/Foto4/ff3.jpeg" alt="Momen 3"></div> 
+            <div class="photo-item photo-4"><img src="https://birthdaysx.github.io/Foto4/ff4.jpeg" alt="Momen 4"></div> 
+            <div class="photo-item photo-5"><img src="https://birthdaysx.github.io/Foto4/ff5.jpeg" alt="Momen 5"></div> 
         </div> 
 
         <div id="scroll-hint" class="scroll-hint">Scroll kebawah ya sayang.. 👇</div>     
   
         <!-- KARTU PESAN --> 
         <div class="message-card" id="message-card">   
-            <h2>Happy Birthdayy<br>Sandra Laura🩵</h2>        
-            <p id="typing-text"></p> 
+            <h2>Happy Birthdayy<br>ya sayangku cintaku pacarku lanangku bojoku gantengku💕</h2>        
+            <p id="typing-text"></p>  
             <p style="font-style: italic; margin-top: 15px;">
-                from si pendek<br>     
+                from your girlfriend<br>      
                 <span style="font-size: 0.8rem; opacity: 0.8;"></span>
             </p>
             <button class="restart-btn" onclick="location.reload()">Mulai Lagi</button>  
@@ -311,15 +311,15 @@
 
         let width, height;
         let particles = [];
-        let lasers = [];
+        let lasers = [];  
         let isStarted = false; 
         let cinematicDone = false;      
     
-        // PESAN UNTUK DIKETIK 
-        const messageToType = " Tepat hari ini 27 maret 2026, it's \n"+"Your special day sayangg 🤍🤍 \n"+"Semoga di umur kamu yang sekarang ini, semua hal baik selalu datang ke kamu. I hope you always stay happy, healthy, and surrounded by people who truly love you (including me, of course 😌😋).\n"+"On your special day, I just want you to know how lucky I am to have you. You’re not just my girlfriend, you’re my safe place, my happiness, and my favorite person.\n\n"+"Makasih ya udah jadi bagian dari hidup aku, udah sabar, dan selalu ada. You mean so much to me, more than words can explain.\n\n"+"Semoga semua impian kamu pelan-pelan tercapai yaa cantikk\n"+"I love you petott, always 💖💖";
+        // PESAN UNTUK DIKETIK  
+        const messageToType = "selamat ulang tahun ya sayang yg ke 15 tahun eh yg ke 22 pasti kamu bakalan bilang iya deh tau aku tua tapi makin tua makin sayang deh aku sama kamu,semoga sehat slalu dan sukses kedepannya yaaa Semoga bertambahnya usia kamu,aku berharap kita bisa terus tumbuh bareng bareng walaupun kita ldr semoga kita cepet ketemunya yaaaaaa\n"+"jadi kakak tingkat yg baik,aku sayang bangetttt pake bangettt sama kamu i love u sayang pokoknya doa terbaik yaaaaaa\n"+"maaf kalo aku nyebelin karna aku ga pernah salah😛😛\n"+"pokoknya aku beruntung bisa sama kamuuuuuuu kita sama sama terus ya pokoknya mass❤️❤️❤️❤️❤️";
  
         // DAFTAR UCAPAN (WISHES)  
-        const wishes = [["ALWAYS","HAPPY🤍"],["SEMANGAT","TERUS"],["LOVE","YOUU"],["MAKIN","SUKSES"],["HAPPY BIRTHDAY","SAYANGKU"]];  
+        const wishes = [["Happy Birthday","yg ke 22 Sayang"],["Panjang Umur","& Sehat Selalu"],["Semoga Semua","Mimpimu Tercapai"],["Semoga Kita","Cepet Ketemunya"],["I Love You","Sayangku"],["Wish You","All The Best"],["Selalu Sayang","AKuu Yaa"]];    
         let wishIndex = 0;
  
         function resize() {     
@@ -385,7 +385,7 @@
                 this.isCinematic = isCinematic;
                 const angle = Math.atan2(targetY - this.y, targetX - this.x);
                 this.speed = isCinematic ? 0.01 : 2.5;              
-                this.acceleration = isCinematic ? 1.028   : 1.1;  
+                this.acceleration = isCinematic ? 1.016     : 1.1;  
                 this.velocityUnit = { x: Math.cos(angle), y: Math.sin(angle) };
                 this.hue = isCinematic ? 0 : random(0, 360);
                 this.color = isCinematic ? '#ff4500' : `hsl(${this.hue}, 100%, 70%)`;
@@ -415,11 +415,11 @@
                     for (let i = 0; i < 280; i++) { 
                         particles.push(new SharpParticle(this.x, this.y, `#9f3a33`, true)); 
                     }
-                    setTimeout(() => createTextParticles(["SANDRA","LAURA🩵"], this.x, this.y, "#ffffff"), 1); 
+                    setTimeout(() => createTextParticles(["Happy Birthday","Sayangku🩵"], this.x, this.y, "#ffffff"), 1); 
                     cinematicDone = true;
                     setTimeout(() => { nextPageBtn.style.display = 'block'; }, 5000);            
                 } else {   
-                    for (let i = 0; i < 50; i++) {           
+                    for (let i = 0; i < 50; i++) {            
                         particles.push(new SharpParticle(this.x, this.y, this.color));
                     }
                 } 
