@@ -763,11 +763,11 @@
         const canvasSakura = document.getElementById('canvas-sakura');
         const ctxSakura = canvasSakura.getContext('2d');
         const audioUtama = document.getElementById('audio-utama');
-        const defaultSongUtama = 'https://birthdaysx.github.io/Musik/perfect-cewek.mp3';   
+        const defaultSongUtama = 'https://birthdaysx.github.io/Musik/perfect-bulan-sutena.mp3';   
         let petals = [];
         let isKonsepUtamaActive = false;
 
-        // --- TAMBAHAN: Variabel penyimpan ID Timeout untuk Typewriter ---
+        // --- TAMBAHAN: Variabel penyimpan ID Timeout untuk Typewriter --- 
         let typeTimeoutP3;
         let typeTimeoutP7;
 
@@ -863,9 +863,9 @@
                     for (let i = 0; i < 280; i++) { 
                         particles.push(new SharpParticle(this.x, this.y, `#9f3a33`, true)); 
                     }
-                    setTimeout(() => createTextParticles(["Happy Birthday","Febri Azhari🩵"], this.x, this.y, "#ffffff"), 1); 
+                    setTimeout(() => createTextParticles(["Happy Birthday","Febby Azhari🩵"], this.x, this.y, "#ffffff"), 1); 
                     cinematicDone = true;
-                    setTimeout(() => { nextPageBtn.style.display = 'block'; }, 5000);        
+                    setTimeout(() => { nextPageBtn.style.display = 'block'; }, 5000);         
                 } else {   
                     for (let i = 0; i < 50; i++) {            
                         particles.push(new SharpParticle(this.x, this.y, this.color)); 
@@ -1092,10 +1092,10 @@
                     } else {
                         target.innerHTML += txt.charAt(i);
                         i++;
-                    }
+                    } 
                     typeTimeoutP3 = setTimeout(type, 50);
                 } else {
-                    document.getElementById('btn-p3').classList.remove('hidden');
+                    document.getElementById('btn-p3').classList.remove('hidden'); 
                 }
             }
             typeTimeoutP3 = setTimeout(type, 500); 
