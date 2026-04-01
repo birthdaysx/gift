@@ -451,21 +451,21 @@
         }
         window.addEventListener('resize', resize); 
         resize();
-
+ 
         const random = (min, max) => Math.random() * (max - min) + min;
 
         /* =========================================
            BAGIAN 1: LOGIKA KEMBANG API (FIREWORKS)
            ========================================= */
         let fw_particles = [];
-        let fw_lasers = [];
+        let fw_lasers = []; 
         let fw_cinematicDone = false; 
  
         const messageToType = "it’s your special day, sayangg 🫶🏻 wish u all the best, my pretty little gecko 🦎💖 makasii yaa udah lahir ke dunia ini dan jadi orang yang selalu bikin hari-hari aku lebih berarti.\n\n"+"Tetap selalu bahagia ya sayaaang, agar aku bisa liat terus senyum kamu yang manis, dan tingkah kamu yang selalu punya cara buat aku ketawa dan seneng di deket kamuu😗💞\n\n"+"selamat bertambah umur yaa cintaku, semoga kamu selalu sehat, panjang umur, dan jadi versi terbaik dari dirimu setiap hari. aku bangga banget punya kamu 🫂✨ semoga semua yang kamu pengenin, kamu perjuangin, dan kamu doain bisa terwujud satu per satu yaa sayang 🤍\n\n"+"walaupun kita lagi LDR, tapi perasaan aku ke kamu nggak pernah berubah 💌 aku selalu ada buat kamu, di setiap proses, di setiap hari kamu. makasih yaa udah jadi rumah paling nyaman buat aku 🏡💕\n\n"+"happy birthday, my beautiful gecko 🦎💗 i love u endlessly, always & forever 🤍✨";
-        const wishes = [["AS TIME","KEEP MOVING",""],["LET MY STEPS","ALWAYS WALK","BESIDE YOURS"]];   
-        let wishIndex = 0; 
+        const wishes = [["SEMOGA","PANJANG UMUR",""],["SEHAT","SELALU",""],["TAMBAH","CANTIK",""],["DILANCARKAN","SEGALA","URUSANNYA"],["DIMUDAHKAN","REZEKINYA",""]];     
+        let wishIndex = 0;  
 
-        class SharpParticle {  
+        class SharpParticle {   
             constructor(x, y, color, isBig = false, targetX = null, targetY = null) { 
                 this.x = x; 
                 this.y = y;
