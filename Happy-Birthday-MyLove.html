@@ -150,7 +150,6 @@
             z-index: 11;
         }
 
-        /* INI BAGIAN YANG DITAMBAHKAN AGAR MUNCUL (opacity: 1) */
         .photo-item.reveal {
             opacity: 1;
         }
@@ -170,7 +169,7 @@
 
         /* POSISI MIRING MASING-MASING ITEM (Zig-zag) */
         .photo-1.reveal { transform: rotate(-5deg); }
-        .photo-2.reveal { transform: rotate(4deg) translateY(20px); } /* Diturunkan sedikit agar zigzag */
+        .photo-2.reveal { transform: rotate(4deg) translateY(20px); } 
         .photo-3.reveal { transform: rotate(5deg); }
         .photo-4.reveal { transform: rotate(-3deg) translateY(20px); }
         .photo-5.reveal { transform: rotate(-4deg); }
@@ -189,7 +188,7 @@
         @media (max-width: 768px) {
             .photo-gallery { gap: 12px; margin-top: 30px; }
             .photo-item { padding: 6px; }
-            .photo-9 { width: 80%; } /* Di HP sedikit dilebarkan */
+            .photo-9 { width: 80%; } 
         }
         /* --------------------------- */
 
@@ -282,7 +281,7 @@
         <div class="photo-gallery">  
             <!-- 1. Video -->
             <div class="photo-item photo-1">
-                <video src="https://birthdaysx.github.io/Foto4/uu1.mp4" autoplay loop muted playsinline></video>
+                <video src="https://birthdaysx.github.io/Foto4/uu1.mp4" autoplay loop muted playsinline preload="metadata"></video>
             </div> 
             
             <!-- 2. Foto -->
@@ -297,32 +296,32 @@
             
             <!-- 4. Video -->
             <div class="photo-item photo-4">
-                <video src="https://birthdaysx.github.io/Foto4/uu4.mp4" autoplay loop muted playsinline></video>
+                <video src="https://birthdaysx.github.io/Foto4/uu4.mp4" autoplay loop muted playsinline preload="metadata"></video>
             </div> 
             
             <!-- 5. Video -->
             <div class="photo-item photo-5">
-                <video src="https://birthdaysx.github.io/Foto4/uu5.mp4" autoplay loop muted playsinline></video>
+                <video src="https://birthdaysx.github.io/Foto4/uu5.mp4" autoplay loop muted playsinline preload="metadata"></video>
             </div> 
             
             <!-- 6. Video -->
             <div class="photo-item photo-6"> 
-                <video src="https://birthdaysx.github.io/Foto4/uu6.mp4" autoplay loop muted playsinline></video>
+                <video src="https://birthdaysx.github.io/Foto4/uu6.mp4" autoplay loop muted playsinline preload="metadata"></video>
             </div> 
             
             <!-- 7. Video -->
             <div class="photo-item photo-7">
-                <video src="https://birthdaysx.github.io/Foto4/uu7.mp4" autoplay loop muted playsinline></video>
+                <video src="https://birthdaysx.github.io/Foto4/uu7.mp4" autoplay loop muted playsinline preload="metadata"></video>
             </div> 
             
             <!-- 8. Video -->
             <div class="photo-item photo-8">
-                <video src="https://birthdaysx.github.io/Foto4/uu8.mp4" autoplay loop muted playsinline></video>
+                <video src="https://birthdaysx.github.io/Foto4/uu8.mp4" autoplay loop muted playsinline preload="metadata"></video>
             </div> 
             
             <!-- 9. Video (Tengah Bawah) -->
             <div class="photo-item photo-9">
-                <video src="https://birthdaysx.github.io/Foto4/uu9.mp4" autoplay loop muted playsinline></video>
+                <video src="https://birthdaysx.github.io/Foto4/uu9.mp4" autoplay loop muted playsinline preload="metadata"></video>
             </div> 
         </div> 
 
@@ -341,7 +340,7 @@
     </div> 
  
     <script>
-        const canvas = document.getElementById('canvas');  
+        const canvas = document.getElementById('canvas'); 
         const ctx = canvas.getContext('2d');
         const page1 = document.getElementById('page-1');
         const page2 = document.getElementById('page-2');
@@ -357,6 +356,7 @@
         let lasers = [];  
         let isStarted = false; 
         let cinematicDone = false;      
+        let animationFrameId;
     
         // PESAN UNTUK DIKETIK  
         const messageToType = "Happy birthday my love. Keep being kind, patience, handsome, funny, warm. I love every part of you";
@@ -374,41 +374,32 @@
 
         const random = (min, max) => Math.random() * (max - min) + min; 
  
+        // LOGIKA KEMBANG API 100% SAMA PERSIS SEPERTI FILE ASLI
         class SharpParticle {
-            constructor(x, y, color, isBig = false, targetX = null, targetY = null, vx = null, vy = null) {
+            constructor(x, y, color, isBig = false, targetX = null, targetY = null) {
                 this.x = x;
                 this.y = y;
                 this.color = color;
                 this.targetX = targetX;
                 this.targetY = targetY;
-                this.isBig = isBig;
                 
                 const angle = Math.random() * Math.PI * 2;
                 const speed = isBig ? random(8, 25) : random(2, 6);
+                this.velocity = { x: Math.cos(angle) * speed, y: Math.sin(angle) * speed };
                 
-                if (vx !== null && vy !== null) {
-                    this.velocity = { x: vx, y: vy };
-                } else {
-                    this.velocity = { x: Math.cos(angle) * speed, y: Math.sin(angle) * speed };
-                }
-                
-                this.friction = (vx !== null) ? 0.96 : 0.94;
-                this.gravity = (targetX !== null) ? 0 : 0.05; 
+                this.friction = 0.94;
+                this.gravity = (targetX !== null) ? 0 : 0.025;
                 this.opacity = 1;
-                this.decay = (targetX !== null) ? 0.0001 : (vx !== null ? random(0.005, 0.015) : (isBig ? random(0.0015, 0.012) : random(0.015, 0.03)));
+                this.decay = (targetX !== null) ? 0.0001 : (isBig ? random(0.0015, 0.012) : random(0.015, 0.03));
             }
             draw() {
                 ctx.save();
                 ctx.globalAlpha = this.opacity;
                 ctx.beginPath();
                 ctx.moveTo(this.x, this.y);
-                ctx.lineTo(this.x - (this.velocity.x * 2), this.y - (this.velocity.y * 2));
+                ctx.lineTo(this.x - (this.velocity.x * 3), this.y - (this.velocity.y * 3));
                 ctx.strokeStyle = this.color;
-                ctx.lineWidth = this.isBig ? 2 : 1.5;
-                
-                ctx.shadowBlur = 5;
-                ctx.shadowColor = this.color;
-                
+                ctx.lineWidth = 1.5;
                 ctx.stroke();
                 ctx.restore();
             }
@@ -433,54 +424,47 @@
             constructor(targetX, targetY, isCinematic = false) {
                 this.x = width / 2; 
                 this.y = height;
-                this.prevX = this.x;
-                this.prevY = this.y;
-                this.baseX = this.x; 
-                
+                this.baseX = this.x; // Posisi dasar untuk poros liukan ular
                 this.targetX = targetX;
                 this.targetY = targetY;
                 this.isCinematic = isCinematic;
-                
                 const angle = Math.atan2(targetY - this.y, targetX - this.x);
                 this.speed = isCinematic ? 0.01 : 2.5;              
-                this.acceleration = isCinematic ? 1.016 : 1.1;  
+                this.acceleration = isCinematic ? 1.016     : 1.1;  
                 this.velocityUnit = { x: Math.cos(angle), y: Math.sin(angle) };
                 this.hue = isCinematic ? 0 : random(0, 360);
-                this.color = isCinematic ? '#ffaa00' : `hsl(${this.hue}, 100%, 70%)`;
+                this.color = isCinematic ? '#ff4500' : `hsl(${this.hue}, 100%, 70%)`;
             } 
             draw() { 
                 ctx.save();
                 ctx.beginPath();  
-                ctx.moveTo(this.prevX, this.prevY);
-                ctx.lineTo(this.x, this.y);
-                ctx.strokeStyle = this.color;
-                ctx.lineWidth = this.isCinematic ? 3 : 1.5;
+                ctx.moveTo(this.x, this.y);
                 
+                let tailY = this.y - this.velocityUnit.y * this.speed * 4;
+                let tailX;
+
                 if (this.isCinematic) {
-                    ctx.shadowBlur = 15;
-                    ctx.shadowColor = '#ff4500';
-                    
-                    ctx.fillStyle = '#fff';
-                    ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
-                    ctx.fill();
+                    // Ekornya kita buat mengikuti pola liukan ular dengan mulus
+                    let tailBaseX = this.baseX - this.velocityUnit.x * this.speed * 4;
+                    tailX = tailBaseX + Math.sin(tailY * 0.03) * 40;
+                } else {
+                    tailX = this.x - this.velocityUnit.x * this.speed * 4;
                 }
-                
+
+                ctx.lineTo(tailX, tailY);
+                ctx.strokeStyle = this.color;
+                ctx.lineWidth = this.isCinematic ? 3 : 1;
                 ctx.stroke();
                 ctx.restore();
             }
             update() {
-                this.prevX = this.x;
-                this.prevY = this.y;
-                
                 this.speed *= this.acceleration;
                 this.baseX += this.velocityUnit.x * this.speed;
                 this.y += this.velocityUnit.y * this.speed;
                 
                 if (this.isCinematic) {
-                    this.x = this.baseX + Math.sin((height - this.y) * 0.03) * 40;
-                    if (Math.random() > 0.4) {
-                        particles.push(new SharpParticle(this.x, this.y, '#ffa500', false, null, null, random(-1, 1), random(0.5, 2)));
-                    }
+                    // Menambahkan liukan ular (sine wave) pada sumbu x
+                    this.x = this.baseX + Math.sin(this.y * 0.03) * 40;
                 } else {
                     this.x = this.baseX;
                 }
@@ -493,31 +477,12 @@
             }
             explode() {
                 if (this.isCinematic) { 
-                    for (let i = 0; i < 350; i++) {
-                        const angle = Math.random() * Math.PI * 2;
-                        const speed = random(15, 35);
-                        particles.push(new SharpParticle(this.x, this.y, '#9b30ff', true, null, null, Math.cos(angle)*speed, Math.sin(angle)*speed));
+                    for (let i = 0; i < 280; i++) { 
+                        particles.push(new SharpParticle(this.x, this.y, `#9f3a33`, true)); 
                     }
-                    for (let i = 0; i < 200; i++) {
-                        const angle = Math.random() * Math.PI * 2;
-                        const speed = random(5, 18);
-                        particles.push(new SharpParticle(this.x, this.y, '#8a2be2', true, null, null, Math.cos(angle)*speed, Math.sin(angle)*speed));
-                    }
-                    
-                    for (let i = 0; i < 200; i++) {
-                        const t = (i / 200) * Math.PI * 2;
-                        const vx = 16 * Math.pow(Math.sin(t), 3);
-                        const vy = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
-                        
-                        const scale = 0.6; 
-                        particles.push(new SharpParticle(this.x, this.y, '#ff1493', true, null, null, vx * scale, vy * scale));
-                        particles.push(new SharpParticle(this.x, this.y, '#ff69b4', true, null, null, vx * scale * 0.85, vy * scale * 0.85));
-                    }
-
-                    setTimeout(() => createTextParticles(["MY HANDSOME","BABY USAMA"], this.x, this.y, "#ffffff"), 1200); 
-                    
-                    cinematicDone = true; 
-                    setTimeout(() => { nextPageBtn.style.display = 'block'; }, 6000);             
+                    setTimeout(() => createTextParticles(["MY HANDSOME","BABY USAMA"], this.x, this.y, "#ffffff"), 1); 
+                    cinematicDone = true;
+                    setTimeout(() => { nextPageBtn.style.display = 'block'; }, 5000);             
                 } else {   
                     for (let i = 0; i < 50; i++) {            
                         particles.push(new SharpParticle(this.x, this.y, this.color));
@@ -575,7 +540,7 @@
             if (cinematicDone && lasers.length === 0) {
                 lasers.push(new Laser(random(width * 0.1, width * 0.9), random(height * 0.1, height * 0.4)));
             }
-            requestAnimationFrame(animate);
+            animationFrameId = requestAnimationFrame(animate);
         }
 
         function typeWriter(text, elementId, speed) {
@@ -619,12 +584,18 @@
 
         // LOGIKA PINDAH HALAMAN
         nextPageBtn.onclick = (e) => {
-            e.stopPropagation();  
+            e.stopPropagation(); 
+            
+            // Menghentikan canvas agar tidak bentrok memori dengan video galeri
+            isStarted = false; 
+            cancelAnimationFrame(animationFrameId); 
+            canvas.style.display = 'none';
+
             page2.classList.add('hidden');
             page3.classList.remove('hidden');
             document.body.style.overflowY = "auto";
             
-            // PENTING: Memastikan *semua* video di galeri langsung diplay bersamaan
+            // Memastikan video berputar saat halaman muncul
             const myVideos = document.querySelectorAll('.photo-item video');
             myVideos.forEach(vid => {
                 vid.play().catch(error => console.log("Video autoplay error:", error));
@@ -642,7 +613,7 @@
                 setTimeout(() => {
                     typeWriter(messageToType, "typing-text", 50);
                 }, 800);
-            }, 1800 + (photoItems.length * 100)); // Disesuaikan agar nunggu semua foto muncul
+            }, 1800 + (photoItems.length * 100));
         };
     </script>
 </body>
