@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday My Love</title>     
+    <!-- Menambahkan link font Quicksand agar terbaca di canvas -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap" rel="stylesheet">
+    <style> 
+        body {       
+            margin: 0;    
+            padding: 0; 
+            background-color: #000; 
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            /* Menghindari zoom otomatis saat klik cepat di iOS */
+            touch-action: manipulation;
+        }
+ 
+        /* Canvas sebagai background tetap */ 
+        #canvas {
+            position: fixed; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            display: none;
+        }
+
+        /* Overlay halaman */ 
+        .page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            transition: opacity 0.5s ease-in-out, visibility 0.5s;
+        }
+
+        .hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* Halaman 1: Kado */
+        #page-1 {
+            background: radial-gradient(circle, #1a1a1a 0%, #000 100%);
+            z-index: 100;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            margin-bottom: 2rem;
+            text-align: center;
+            animation: pulse 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); text-shadow: 0 0 10px #fff; }
+            to { transform: scale(1.05); text-shadow: 0 0 30px #ff2fa1; } 
+        }
+
+        #gift-button {
+            font-size: 100px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            user-select: none;
+            animation: wobble 2s infinite ease-in-out;
+            transition: transform 0.3s;
+            filter: drop-shadow(0 0 20px rgba(255, 78, 166, 0.4));
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        @keyframes wobble {
+            0%, 100% { transform: rotate(-5deg) translateY(0); }
+            50% { transform: rotate(5deg) translateY(-20px); }
+        }
+
+        /* Halaman 2: Kembang Api Overlay */
+        #page-2 {
+            pointer-events: auto;
+            /* Pastikan z-index cukup tinggi dan background transparan agar klik tembus */
+            background: transparent;
+        }
+
+        #next-page-btn {
+            position: fixed;
+            bottom: 50px;
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid white;
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            font-size: 16px;
+            z-index: 20;
+            transition: all 0.3s;
+            pointer-events: auto;
+            display: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        #next-page-btn:hover {
+            background: white;
+            color: black;
+            box-shadow: 0 0 20px white;
+        }
+
+        /* --- STYLE HALAMAN 3 BARU (FULLSCREEN SLIDESHOW) --- */
+        #page-3 {
+            position: fixed; /* Tidak bisa di-scroll */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+        }
+
+        .photo-gallery {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; /* Di bawah kartu ucapan */
+        }
+
+        .photo-item {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out; /* Efek transisi smooth */
+            z-index: 1;
+        }
+
+        .photo-item.active {
+            opacity: 1;
+            z-index: 2;
+        }
+
+        /* Style untuk Foto DAN Video agar Full Screen */
+        .photo-item img, .photo-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Memenuhi layar tanpa merusak proporsi */
+            display: block;
+            filter: brightness(0.45); /* Digelapkan sedikit agar teks kartu tetap terbaca jelas */
+        }
+
+        /* --- KARTU PESAN (TETAP SAMA TAPI MENGAMBANG DI TENGAH) --- */
+        .message-card {
+            position: relative;
+            z-index: 60;
+            max-width: 450px;
+            width: 85%;
+            background: rgba(105, 105, 105, 0.089); /* Dibuat sedikit lebih gelap agar kontras dengan background */
+            padding: 30px;
+            border-radius: 25px;
+            border: 1px solid rgba(206, 206, 206, 0.082);
+            
+            box-shadow: 0 20px 50px rgba(0,0,0,0.7); 
+            text-align: center;
+            opacity: 0;
+            transform: scale(0.8) translateY(30px);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+ 
+        #typing-text {
+            white-space: pre-wrap;
+        }
+
+        .message-card.reveal {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        .message-card h2 { color: #f14ab1; margin-bottom: 15px; font-size: 1.8rem; }
+        .message-card p { font-size: 1.05rem; line-height: 1.6; color: #fff; }
+        .restart-btn { margin-top: 25px; background: transparent; color: rgba(255,255,255,0.6); border: none; text-decoration: underline; cursor: pointer; }
+
+        /* Gaya untuk efek kursor mengetik */ 
+        #typing-text::after {
+            content: '|';
+            animation: blink 0.7s infinite;
+            color: #eb5ac7;
+            margin-left: 2px;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <!-- AUDIO BACKGROUND -->
+    <audio id="birthday-music" loop preload="auto">
+        <source src="https://birthdaysx.github.io/Musik/kota-ini.mp3" type="audio/mpeg">    
+    </audio>
+
+    <canvas id="canvas"></canvas>        
+   
+    <!-- HALAMAN 1 -->  
+    <div id="page-1" class="page">   
+        <h1>Happy Birthday!</h1>
+        <button id="gift-button" aria-label="Buka Kado">🎁</button>  
+        <p style="color: #888; margin-top: 30px; letter-spacing: 1px;">Click the gift for a surprise</p>
+    </div>
+
+    <!-- HALAMAN 2 (FIREWORKS) --> 
+    <div id="page-2" class="page hidden">
+        <div style="position: fixed; top: 20px; color: rgba(255,255,255,0.7); letter-spacing: 2px; font-size: 14px; animation: pulse 1s infinite alternate; pointer-events: none;">
+            ✨ Click the screen for Wishes ✨ 
+        </div>
+        <button id="next-page-btn">See Special Surprise ✨</button>  
+    </div> 
+ 
+    <!-- HALAMAN 3 (FULLSCREEN SLIDESHOW FOTO & VIDEO) --> 
+    <div id="page-3" class="page hidden">    
+         
+        <div class="photo-gallery">  
+            <!-- Atribut loop dihapus agar event ended bisa berjalan -->
+            <!-- 1. Video -->
+            <div class="photo-item photo-1">
+                <video src="https://birthdaysx.github.io/Foto4/uu11.mp4" muted playsinline preload="metadata"></video>
+            </div> 
+            
+            <!-- 2. Foto -->
+            <div class="photo-item photo-2">
+                <video src="https://birthdaysx.github.io/Foto4/uu12.mp4" muted playsinline preload="metadata"></video>
+            </div> 
+            
+            <!-- 3. Foto -->
+            <div class="photo-item photo-3">
+                <video src="https://birthdaysx.github.io/Foto4/uu13.mp4" muted playsinline preload="metadata"></video> 
+            </div> 
+            
+            <!-- 4. Video -->
+            <div class="photo-item photo-4">
+                <video src="https://birthdaysx.github.io/Foto4/uu14.mp4" muted playsinline preload="metadata"></video>
+            </div> 
+            
+            <!-- 5. Video -->
+            <div class="photo-item photo-5">
+                <video src="https://birthdaysx.github.io/Foto4/uu15.mp4" muted playsinline preload="metadata"></video>
+            </div> 
+            
+            <!-- 6. Video -->
+            <div class="photo-item photo-6"> 
+                <video src="https://birthdaysx.github.io/Foto4/uu16.mp4" muted playsinline preload="metadata"></video>
+            </div> 
+            
+            <!-- 7. Video -->
+            <div class="photo-item photo-7">
+                <video src="https://birthdaysx.github.io/Foto4/uu17.mp4" muted playsinline preload="metadata"></video>
+            </div> 
+            
+            <!-- 8. Video -->
+            <div class="photo-item photo-8">
+                <video src="https://birthdaysx.github.io/Foto4/uu18.mp4" muted playsinline preload="metadata"></video>
+            </div> 
+            
+            <!-- 9. Video -->
+            <div class="photo-item photo-9">
+                <video src="https://birthdaysx.github.io/Foto4/uu19.mp4" muted playsinline preload="metadata"></video>
+            </div> 
+        </div>  
+  
+        <!-- KARTU PESAN MENGAMBANG DI ATAS FOTO --> 
+        <div class="message-card" id="message-card">   
+            <h2>Happy Birthdayy<br>My Handsome Baby Usama</h2>         
+            <p id="typing-text"></p>  
+            <p style="font-style: italic; margin-top: 15px;">
+                From Your Sweet Baby<br>        
+                <span style="font-size: 0.8rem; opacity: 0.8;"></span>
+            </p>
+            <button class="restart-btn" onclick="location.reload()">See Again</button>   
+        </div> 
+    </div> 
+ 
+    <script>
+        const canvas = document.getElementById('canvas'); 
+        const ctx = canvas.getContext('2d');
+        const page1 = document.getElementById('page-1');
+        const page2 = document.getElementById('page-2');
+        const page3 = document.getElementById('page-3');
+        const giftButton = document.getElementById('gift-button');
+        const nextPageBtn = document.getElementById('next-page-btn');
+        const messageCard = document.getElementById('message-card');
+        const photoItems = document.querySelectorAll('.photo-item');
+
+        let width, height;
+        let particles = [];
+        let lasers = [];  
+        let isStarted = false; 
+        let cinematicDone = false;      
+        let animationFrameId;
+    
+        // PESAN UNTUK DIKETIK  
+        const messageToType = "Happy birthday my love. Keep being kind, patience, handsome, funny, warm. I love every part of you";
+
+        // DAFTAR UCAPAN (WISHES)  
+        const wishes = [["HAPPY BIRTHDAY","MY LOVE🤍"],["KEEP","BEING KIND"],["PATIENCE","HANDSOME"],["FUNNY","WARM"],["I LOVE EVERY","PART OF YOU"]];   
+        let wishIndex = 0;
+ 
+        function resize() {     
+            width = canvas.width = window.innerWidth;   
+            height = canvas.height = window.innerHeight; 
+        }
+        window.addEventListener('resize', resize); 
+        resize();
+
+        const random = (min, max) => Math.random() * (max - min) + min; 
+ 
+        // Penambahan argumen exactAngle dan exactSpeed untuk membentuk lingkaran sempurna
+        class SharpParticle {
+            constructor(x, y, color, isBig = false, targetX = null, targetY = null, exactAngle = undefined, exactSpeed = undefined) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.targetX = targetX;
+                this.targetY = targetY;
+                
+                const angle = exactAngle !== undefined ? exactAngle : Math.random() * Math.PI * 2;
+                
+                // KUNCI AGAR TIDAK KAKU: Beri sedikit variasi kecepatan (jitter) meski diset exactSpeed
+                // Agar garis luar tetap bulat sempurna tapi pinggirannya bertekstur organik
+                let speed;
+                if (exactSpeed !== undefined) {
+                    speed = exactSpeed * random(0.96, 1.04); 
+                } else {
+                    speed = isBig ? random(5, 30) : random(2, 6);
+                }
+                
+                this.velocity = { x: Math.cos(angle) * speed, y: Math.sin(angle) * speed };
+                
+                // friction diperbesar agar laju berhentinya lebih halus dan melayang
+                this.friction = 0.93;       
+                // gravity ditambah agar efek "jatuh" di akhir ledakan terasa seperti kembang api asli
+                this.gravity = (targetX !== null) ? 0 : 0.045; 
+                this.opacity = 1; 
+                this.timer = 0; // Tambahkan timer untuk mengatur hilangnya tulisan
+                this.decay = (targetX !== null) ? 0 : (isBig ? random(0.005, 0.015) : random(0.015, 0.03));
+            }
+            draw() {
+                ctx.save(); 
+                ctx.globalAlpha = this.opacity;
+                ctx.beginPath(); 
+                ctx.moveTo(this.x, this.y);
+                // Jejak partikel disesuaikan agar natural
+                ctx.lineTo(this.x - (this.velocity.x * 4), this.y - (this.velocity.y * 4));
+                ctx.strokeStyle = this.color;
+                ctx.lineWidth = 2; // Sedikit ditebalkan
+                ctx.lineCap = 'round'; // Ujungnya membulat agar tidak terlihat seperti jarum kaku
+                ctx.stroke();
+                ctx.restore();
+            }
+            update() {
+                if(this.targetX !== null) {
+                    this.x += (this.targetX - this.x) * 0.1;
+                    this.y += (this.targetY - this.y) * 0.1;
+                    this.velocity.x *= 0.9;
+                    this.velocity.y *= 0.9;
+                    
+                    // Logika agar tulisan menghilang setelah beberapa saat
+                    this.timer++;
+                    if (this.timer > 50) { // Tunggu sekitar 2.5 detik setelah tulisan terbentuk
+                        this.opacity -= 0.015; // Fade out / hilangkan secara perlahan
+                    }
+                } else {
+                    this.velocity.x *= this.friction; 
+                    this.velocity.y *= this.friction;
+                    this.velocity.y += this.gravity;
+                    this.x += this.velocity.x;
+                    this.y += this.velocity.y;
+                    this.opacity -= this.decay;
+                }
+            }
+        }
+
+        class Laser {
+            constructor(targetX, targetY, isCinematic = false) {
+                this.x = width / 2; 
+                this.y = height;
+                this.baseX = this.x; 
+                this.targetX = targetX;
+                this.targetY = targetY;
+                this.isCinematic = isCinematic;
+                const angle = Math.atan2(targetY - this.y, targetX - this.x);
+                this.speed = isCinematic ? 0.01 : 2.5;              
+                this.acceleration = isCinematic ? 1.016     : 1.1;  
+                this.velocityUnit = { x: Math.cos(angle), y: Math.sin(angle) };
+                
+                // Jika cinematic, sinarnya kita buat ungu kebiruan seperti di video
+                this.hue = isCinematic ? 260 : random(0, 360);
+                this.color = isCinematic ? '#FF4500' : `hsl(${this.hue}, 100%, 70%)`;  
+            } 
+            draw() { 
+                ctx.save();
+                ctx.beginPath();  
+                ctx.moveTo(this.x, this.y);
+                
+                let tailY = this.y - this.velocityUnit.y * this.speed * 4;
+                let tailX;
+
+                if (this.isCinematic) {
+                    let tailBaseX = this.baseX - this.velocityUnit.x * this.speed * 4;
+                    tailX = tailBaseX + Math.sin(tailY * 0.03) * 40;
+                } else {
+                    tailX = this.x - this.velocityUnit.x * this.speed * 4;
+                }
+
+                ctx.lineTo(tailX, tailY);
+                ctx.strokeStyle = this.color;
+                ctx.lineWidth = this.isCinematic ? 3 : 1;
+                ctx.stroke();
+                ctx.restore();
+            }
+            update() {
+                this.speed *= this.acceleration;
+                this.baseX += this.velocityUnit.x * this.speed;
+                this.y += this.velocityUnit.y * this.speed;
+                
+                if (this.isCinematic) {
+                    this.x = this.baseX + Math.sin(this.y * 0.03) * 40;
+                } else {
+                    this.x = this.baseX;
+                }
+
+                if (this.y <= this.targetY) {
+                    this.explode(); 
+                    return false;
+                }
+                return true;
+            }
+            explode() {
+                if (this.isCinematic) { 
+                    const maxSpeed = 24; // Kecepatan disesuaikan agar mekarnya lebih elegan (tidak terlalu kencang)
+                    
+                    // 1. Bagian dalam: Partikel menyebar secara ACAK seperti kembang api natural
+                    const innerParticleCount = 450; 
+                    for (let i = 0; i < innerParticleCount; i++) { 
+                        const angle = Math.random() * Math.PI * 2; 
+                        
+                        // Distribusi kecepatan diubah agar lebih banyak mengisi volume dalam bola
+                        const speed = Math.pow(Math.random(), 0.8) * (maxSpeed * 0.9); 
+                        const hue = random(250, 280); 
+                        const color = `hsl(${hue}, 100%, 70%)`;   
+                        
+                        particles.push(new SharpParticle(this.x, this.y, color, true, null, null, angle, speed)); 
+                    }
+
+                    // 2. Cincin terluar: Batas bulat sempurna namun organik
+                    const outerParticleCount = 200; 
+                    for (let i = 0; i < outerParticleCount; i++) {
+                        const angle = (Math.PI * 2 / outerParticleCount) * i; 
+                        const hue = random(250, 290); // Gradasi warna ungu-biru 
+                        const color = `hsl(${hue}, 100%, 70%)`;    
+                        particles.push(new SharpParticle(this.x, this.y, color, true, null, null, angle, maxSpeed));
+                    }
+
+                    // 3. Efek kilatan cahaya di pusat ledakan (Core Flash) 
+                    for (let i=0; i<30; i++) {
+                        particles.push(new SharpParticle(this.x, this.y, '#8F00FF', true, null, null, Math.random() * Math.PI * 2, random(1, 5)));
+                    }
+
+                    setTimeout(() => createTextParticles(["MY HANDSOME","BABY USAMA"], this.x, this.y, "#ffffff"), 1); 
+                    cinematicDone = true;
+                    setTimeout(() => { nextPageBtn.style.display = 'block'; }, 5000);             
+                } else {   
+                    for (let i = 0; i < 50; i++) {            
+                        particles.push(new SharpParticle(this.x, this.y, this.color));
+                    }
+                } 
+            }  
+        }  
+
+        function createTextParticles(text, centerX, centerY, color) {
+            const tempCanvas = document.createElement('canvas');  
+            const tCtx = tempCanvas.getContext('2d');
+            tempCanvas.width = 600;
+            tempCanvas.height = 200; 
+            
+            tCtx.fillStyle = 'red'; 
+            tCtx.font = "bold 50px 'Quicksand', sans-serif";
+            tCtx.textAlign = 'center';
+            tCtx.textBaseline = 'middle';
+
+            if (Array.isArray(text)) {
+                tCtx.fillText(text[0], 300, 60);
+                tCtx.fillText(text[1], 300, 120);
+            } else {
+                tCtx.fillText(text, 300, 100);
+            }
+            
+            const data = tCtx.getImageData(0, 0, 600, 200).data;
+            for (let y = 0; y < 200; y += 4) {
+                for (let x = 0; x < 600; x += 4) {
+                    if (data[(y * 600 + x) * 4 + 3] > 128) {
+                        const tx = centerX + (x - 300);
+                        const ty = centerY + (y - 100);
+                        particles.push(new SharpParticle(centerX, centerY, color, true, tx, ty));
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            if (!isStarted) return;
+            // Gunakan alpha yang lebih rendah untuk efek jejak (motion blur) yang lebih panjang
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+            ctx.fillRect(0, 0, width, height);
+
+            // Tambahkan efek blend agar warna warni terlihat lebih "menyala" (glowing)
+            ctx.globalCompositeOperation = 'lighter';
+
+            lasers = lasers.filter(l => {
+                l.draw();
+                return l.update();
+            });
+
+            particles = particles.filter(p => {
+                p.draw();
+                p.update();
+                return p.opacity > 0;
+            });
+
+            // Kembalikan blend mode ke normal setelah menggambar partikel
+            ctx.globalCompositeOperation = 'source-over';
+
+            if (cinematicDone && lasers.length === 0) {
+                lasers.push(new Laser(random(width * 0.1, width * 0.9), random(height * 0.1, height * 0.4)));
+            }
+            animationFrameId = requestAnimationFrame(animate);
+        }
+
+        function typeWriter(text, elementId, speed) {
+            let i = 0;
+            const element = document.getElementById(elementId);
+            element.innerHTML = ""; 
+            
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+
+        giftButton.addEventListener('click', () => {
+            const music = document.getElementById('birthday-music');
+            music.play().catch(error => console.log("Musik diblokir browser:", error));
+            page1.classList.add('hidden');
+            canvas.style.display = 'block';
+            page2.classList.remove('hidden');
+            isStarted = true;
+            setTimeout(() => {
+                lasers.push(new Laser(width / 2, height * 0.25, true));
+                animate();
+            }, 500);
+        });
+
+        window.addEventListener('pointerdown', (e) => {
+            if (cinematicDone && isStarted && e.target.id !== 'next-page-btn' && e.target.tagName !== 'VIDEO') {
+                const text = wishes[wishIndex];
+                const randomColor = `hsl(${Math.random() * 360}, 100%, 75%)`;
+                const clickX = e.clientX;
+                const clickY = e.clientY;
+                createTextParticles(text, clickX, clickY, randomColor);
+                wishIndex = (wishIndex + 1) % wishes.length;
+            }
+        }, { passive: true });
+
+        // LOGIKA PINDAH HALAMAN & SLIDESHOW BARU
+        nextPageBtn.onclick = (e) => {
+            e.stopPropagation(); 
+            
+            // Menghentikan canvas agar tidak bentrok memori dengan video galeri
+            isStarted = false; 
+            cancelAnimationFrame(animationFrameId); 
+            canvas.style.display = 'none';
+
+            page2.classList.add('hidden');
+            page3.classList.remove('hidden');
+            
+            // Sistem Slideshow Transisi Full Screen Berdasarkan Video Selesai
+            let currentSlide = 0;
+            
+            function showSlide(index) {
+                photoItems.forEach((item, i) => {
+                    item.classList.remove('active');
+                    const vid = item.querySelector('video');
+                    if (vid) {
+                        vid.loop = false; // Memastikan video tidak diloop
+                        if (i === index) {
+                            vid.currentTime = 0; // Reset video ke awal
+                            vid.play().catch(err => console.log(err)); // Play video yg sedang tampil
+                        } else {
+                            vid.pause(); // Pause video yg tertutup agar ringan
+                        }
+                    }
+                });
+                photoItems[index].classList.add('active');
+            }
+
+            // Pasang event listener ke SEMUA video agar otomatis lanjut setelah selesai
+            photoItems.forEach((item) => {
+                const vid = item.querySelector('video');
+                if (vid) {
+                    vid.addEventListener('ended', () => {
+                        currentSlide = (currentSlide + 1) % photoItems.length;
+                        showSlide(currentSlide);
+                    });
+                }
+            });
+
+            // Tampilkan slide pertama
+            showSlide(currentSlide);
+
+            // Memunculkan kartu pesan di atas slideshow
+            setTimeout(() => {
+                messageCard.classList.add('reveal');
+                
+                setTimeout(() => {
+                    typeWriter(messageToType, "typing-text", 50);
+                }, 800);
+            }, 1000);
+        };
+    </script>
+</body>
+</html> 
