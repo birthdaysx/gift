@@ -211,10 +211,10 @@
 <body>
     <!-- AUDIO BACKGROUND -->
     <audio id="birthday-music" loop preload="auto">
-        <source src="https://birthdaysx.github.io/Musik/kota-ini.mp3" type="audio/mpeg">    
+        <source src="https://birthdaysx.github.io/Musik/die-with-a-smile.mp3" type="audio/mpeg">    
     </audio>
 
-    <canvas id="canvas"></canvas>        
+    <canvas id="canvas"></canvas>         
    
     <!-- HALAMAN 1 -->  
     <div id="page-1" class="page">   
@@ -235,7 +235,6 @@
     <div id="page-3" class="page hidden">    
          
         <div class="photo-gallery">  
-            <!-- Atribut loop dihapus agar event ended bisa berjalan -->
             <!-- 1. Video -->
             <div class="photo-item photo-1">
                 <video src="https://birthdaysx.github.io/Foto4/uu11.mp4" muted playsinline preload="metadata"></video>
@@ -281,7 +280,7 @@
                 <video src="https://birthdaysx.github.io/Foto4/uu19.mp4" muted playsinline preload="metadata"></video>
             </div> 
         </div>  
-  
+ 
         <!-- KARTU PESAN MENGAMBANG DI ATAS FOTO --> 
         <div class="message-card" id="message-card">   
             <h2>Happy Birthdayy<br>My Handsome Baby Usama</h2>         
@@ -328,7 +327,6 @@
 
         const random = (min, max) => Math.random() * (max - min) + min; 
  
-        // Penambahan argumen exactAngle dan exactSpeed untuk membentuk lingkaran sempurna
         class SharpParticle {
             constructor(x, y, color, isBig = false, targetX = null, targetY = null, exactAngle = undefined, exactSpeed = undefined) {
                 this.x = x;
@@ -339,8 +337,6 @@
                 
                 const angle = exactAngle !== undefined ? exactAngle : Math.random() * Math.PI * 2;
                 
-                // KUNCI AGAR TIDAK KAKU: Beri sedikit variasi kecepatan (jitter) meski diset exactSpeed
-                // Agar garis luar tetap bulat sempurna tapi pinggirannya bertekstur organik
                 let speed;
                 if (exactSpeed !== undefined) {
                     speed = exactSpeed * random(0.96, 1.04); 
@@ -350,12 +346,10 @@
                 
                 this.velocity = { x: Math.cos(angle) * speed, y: Math.sin(angle) * speed };
                 
-                // friction diperbesar agar laju berhentinya lebih halus dan melayang
                 this.friction = 0.93;       
-                // gravity ditambah agar efek "jatuh" di akhir ledakan terasa seperti kembang api asli
                 this.gravity = (targetX !== null) ? 0 : 0.045; 
                 this.opacity = 1; 
-                this.timer = 0; // Tambahkan timer untuk mengatur hilangnya tulisan
+                this.timer = 0;
                 this.decay = (targetX !== null) ? 0 : (isBig ? random(0.005, 0.015) : random(0.015, 0.03));
             }
             draw() {
@@ -363,11 +357,10 @@
                 ctx.globalAlpha = this.opacity;
                 ctx.beginPath(); 
                 ctx.moveTo(this.x, this.y);
-                // Jejak partikel disesuaikan agar natural
                 ctx.lineTo(this.x - (this.velocity.x * 4), this.y - (this.velocity.y * 4));
                 ctx.strokeStyle = this.color;
-                ctx.lineWidth = 2; // Sedikit ditebalkan
-                ctx.lineCap = 'round'; // Ujungnya membulat agar tidak terlihat seperti jarum kaku
+                ctx.lineWidth = 2; 
+                ctx.lineCap = 'round'; 
                 ctx.stroke();
                 ctx.restore();
             }
@@ -378,10 +371,9 @@
                     this.velocity.x *= 0.9;
                     this.velocity.y *= 0.9;
                     
-                    // Logika agar tulisan menghilang setelah beberapa saat
                     this.timer++;
-                    if (this.timer > 50) { // Tunggu sekitar 2.5 detik setelah tulisan terbentuk
-                        this.opacity -= 0.015; // Fade out / hilangkan secara perlahan
+                    if (this.timer > 50) { 
+                        this.opacity -= 0.015; 
                     }
                 } else {
                     this.velocity.x *= this.friction; 
@@ -407,7 +399,6 @@
                 this.acceleration = isCinematic ? 1.016     : 1.1;  
                 this.velocityUnit = { x: Math.cos(angle), y: Math.sin(angle) };
                 
-                // Jika cinematic, sinarnya kita buat ungu kebiruan seperti di video
                 this.hue = isCinematic ? 260 : random(0, 360);
                 this.color = isCinematic ? '#FF4500' : `hsl(${this.hue}, 100%, 70%)`;  
             } 
@@ -451,14 +442,11 @@
             }
             explode() {
                 if (this.isCinematic) { 
-                    const maxSpeed = 24; // Kecepatan disesuaikan agar mekarnya lebih elegan (tidak terlalu kencang)
+                    const maxSpeed = 24; 
                     
-                    // 1. Bagian dalam: Partikel menyebar secara ACAK seperti kembang api natural
                     const innerParticleCount = 450; 
                     for (let i = 0; i < innerParticleCount; i++) { 
                         const angle = Math.random() * Math.PI * 2; 
-                        
-                        // Distribusi kecepatan diubah agar lebih banyak mengisi volume dalam bola
                         const speed = Math.pow(Math.random(), 0.8) * (maxSpeed * 0.9); 
                         const hue = random(250, 280); 
                         const color = `hsl(${hue}, 100%, 70%)`;   
@@ -466,23 +454,22 @@
                         particles.push(new SharpParticle(this.x, this.y, color, true, null, null, angle, speed)); 
                     }
 
-                    // 2. Cincin terluar: Batas bulat sempurna namun organik
                     const outerParticleCount = 200; 
                     for (let i = 0; i < outerParticleCount; i++) {
                         const angle = (Math.PI * 2 / outerParticleCount) * i; 
-                        const hue = random(250, 290); // Gradasi warna ungu-biru 
+                        const hue = random(250, 290); 
                         const color = `hsl(${hue}, 100%, 70%)`;    
                         particles.push(new SharpParticle(this.x, this.y, color, true, null, null, angle, maxSpeed));
                     }
 
-                    // 3. Efek kilatan cahaya di pusat ledakan (Core Flash) 
                     for (let i=0; i<30; i++) {
                         particles.push(new SharpParticle(this.x, this.y, '#8F00FF', true, null, null, Math.random() * Math.PI * 2, random(1, 5)));
                     }
 
-                    setTimeout(() => createTextParticles(["MY HANDSOME","BABY USAMA"], this.x, this.y, "#ffffff"), 1); 
+                    // HANYA MENGUBAH POSISI KE TENGAH (width / 2)
+                    setTimeout(() => createTextParticles(["MY HANDSOME","BABY USAMA"], width / 2, this.y, "#ffffff"), 1); 
                     cinematicDone = true;
-                    setTimeout(() => { nextPageBtn.style.display = 'block'; }, 5000);             
+                    setTimeout(() => { nextPageBtn.style.display = 'block'; }, 5000);            
                 } else {   
                     for (let i = 0; i < 50; i++) {            
                         particles.push(new SharpParticle(this.x, this.y, this.color));
@@ -498,6 +485,7 @@
             tempCanvas.height = 200; 
             
             tCtx.fillStyle = 'red'; 
+            // UKURAN DIKEMBALIKAN KE 50px SEPERTI SEMULA
             tCtx.font = "bold 50px 'Quicksand', sans-serif";
             tCtx.textAlign = 'center';
             tCtx.textBaseline = 'middle';
@@ -523,11 +511,9 @@
 
         function animate() {
             if (!isStarted) return;
-            // Gunakan alpha yang lebih rendah untuk efek jejak (motion blur) yang lebih panjang
             ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
             ctx.fillRect(0, 0, width, height);
 
-            // Tambahkan efek blend agar warna warni terlihat lebih "menyala" (glowing)
             ctx.globalCompositeOperation = 'lighter';
 
             lasers = lasers.filter(l => {
@@ -541,7 +527,6 @@
                 return p.opacity > 0;
             });
 
-            // Kembalikan blend mode ke normal setelah menggambar partikel
             ctx.globalCompositeOperation = 'source-over';
 
             if (cinematicDone && lasers.length === 0) {
@@ -646,4 +631,4 @@
         };
     </script>
 </body>
-</html> 
+</html>
