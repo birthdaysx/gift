@@ -286,11 +286,11 @@
             <div class="page" id="p6">
                 <div class="photo-group"> 
                     <img src="https://birthdaysx.github.io/Foto4/aaa13.jpeg" class="photo-frame photo-small"> 
-                    <img src="https://birthdaysx.github.io/Foto4/aaa14.jpeg" class="photo-frame photo-small"> 
+                    <img src="https://birthdaysx.github.io/Foto4/aaa16.jpeg" class="photo-frame photo-small"> 
                 </div>
                 <h3>Bismillah setiap tahun, sayang bisa semakin bijak, semakin baik hati sama semua orang & semakin luar biasa,<br><br>Dan juga yg paling penting tetap semangat dalam kondisi apapun, jadikan aku rumahmu jg ya sayang, kita harus bisa 'Saling' ya sayang dalam apapun selama hubungan LDR kita ini, Insya Allah nanti kita akan dipertemukan dalam waktu terindah, <br><br>Happy Birthday, My Lovely Runner 🫶</h3>
                 <p class="text">Oh iya kalau ditanya apa yg paling indah hari ini?<br>Jawabanku, kamu sayangku</p>
-                <button onclick="nextPage(6)">🤍</button>  
+                <button onclick="nextPage(6)">🤍</button>    
             </div>
 
             <div class="page" id="p7"> 
@@ -304,6 +304,9 @@
                 <img src="https://media.tenor.com/AZ12YafzVwwAAAAi/bubu-dudu-prince-bubu-dudu-princess.gif" class="sticker-gif"> 
                 <h1 style="font-size: 1.1rem;">HAPPY BIRTHDAY<br>SAYANGKUU<br>๑•͈ᴗ•͈๑</h1>   
                 <div id="typewriter"></div>   
+                
+                <!-- Tombol Balas Pesan ke WA (Akan dimunculkan lewat JS setelah teks selesai) -->
+                <button id="waButton" style="display: none; animation: fadeIn 1s;" onclick="balasWA()">Balas Pesan Ini 🥰</button>
             </div> 
 
         </div>
@@ -400,10 +403,30 @@ Another year older, wiser, and even more amazing.
                     setTimeout(type, 50); // Kecepatan mengetik
                 } else {
                     target.innerHTML += "\n\n<strong>Love you Lelaki Hebatku Sayang ❤️🩵</strong>";       
-                    target.scrollTop = target.scrollHeight; // Pastikan scroll tetap di bawah 
+                    
+                    // Tampilkan tombol WhatsApp setelah selesai mengetik
+                    const waBtn = document.getElementById("waButton");
+                    waBtn.style.display = "inline-block";
+                    
+                    // Scroll sedikit ke bawah agar tombol terlihat jelas
+                    setTimeout(() => {
+                        target.scrollTop = target.scrollHeight + 100;
+                        document.querySelector('.glass-card').scrollTop += 100;
+                    }, 100);
                 }
             } 
             type(); 
+        }
+
+        // Fungsi Redirect ke WhatsApp
+        function balasWA() {
+            const phoneNumber = "6285157553621";
+            // Pesan balasan otomatis yang sudah disiapkan
+            const message = "Hai sayang! Makasih banyak ya buat ucapan ulang tahunnya dan web cantiknya, mas seneng banget bacanya 🥰 Love you too ❤️";
+            const encodedMessage = encodeURIComponent(message);
+            
+            // Buka di tab baru
+            window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
         }
     </script>
 </body>
