@@ -441,13 +441,13 @@ I Love You forever and ever Cantikkkk ❤💝😘
             function type() {
                 if (i < text.length) { 
                     // Mengetik karakter biasa
-                    target.innerHTML += text.charAt(i); 
+                    target.innerHTML += text.charAt(i);  
                     i++;
                     target.scrollTop = target.scrollHeight; // Auto scroll ke bawah
                     setTimeout(type, 50); // Kecepatan mengetik
                 } else {
                     // KETIKA KETIKAN SELESAI, TAMBAHKAN TEKS BOLD INI
-                    target.innerHTML += "<strong><br>Sayang wifaaaaa</strong>";     
+                    target.innerHTML += "<strong></strong>";      
                     target.scrollTop = target.scrollHeight; // Pastikan scroll tetap di bawah
                     
                     // Munculkan grup tombol (back & Balas WA) secara bersamaan
@@ -460,9 +460,11 @@ I Love You forever and ever Cantikkkk ❤💝😘
 
         // Fungsi Redirect ke WhatsApp
         function balasWA() {
-            const phoneNumber = "6289512580381";
-            // Pesan balasan otomatis disesuaikan dengan konteks isi surat
-            const message = "Halo Bilaaa! Makasih banyak yaa buat ucapan dan hadiah kecilnya ini, abang seneng banget bacanya! 🥰 Makasih juga selalu nemenin dan dukung abang. Jangan minta maaf terus ya, ayoo kita wujudin mimpi bareng-bareng! Btw, ayo kapan nih kita maam ice creamnya? 🍦✨"; 
+            // Nomor WhatsApp sudah diubah menjadi 083830405954 dengan format internasional 62
+            const phoneNumber = "6283830405954";
+            
+            // Pesan balasan otomatis disesuaikan agar seolah-olah pacar kamu yang membalas ucapanmu
+            const message = "Halo sayanggg! Makasih banyak yaa buat ucapan ulang tahunnya, aku terharu dan seneng banget bacanya! 🥰 Makasih juga udah jadi yang terbaik dan selalu sayang sama aku. I love you too sayanggg! ❤️"; 
             const encodedMessage = encodeURIComponent(message);
             
             // Buka link ke WA di tab baru
