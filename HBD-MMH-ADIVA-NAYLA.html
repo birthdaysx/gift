@@ -543,7 +543,7 @@
     <!-- PAGE 5: GALLERY -->
     <div id="page5" class="page-container hidden-page"> 
         <!-- Text diubah ke text-sky-100 -->
-        <h2 class="font-big text-3xl mb-4 text-sky-100 drop-shadow-md">Our Memories✨</h2>    
+        <h2 class="font-big text-3xl mb-4 text-sky-100 drop-shadow-md">Your Memories✨</h2>    
         <div class="photo-grid mb-6">
             <div class="photo-card" onclick="this.style.transform='scale(1.05) rotate(1deg)'; setTimeout(()=>this.style.transform='', 400)"><img src="https://birthdaysx.github.io/Foto4/kkk1.jpeg" alt="Memory 1"></div>
             <div class="photo-card" onclick="this.style.transform='scale(1.05) rotate(-1deg)'; setTimeout(()=>this.style.transform='', 400)"><img src="https://birthdaysx.github.io/Foto4/kkk2.jpeg" alt="Memory 2"></div>
@@ -553,7 +553,7 @@
             <div class="photo-card" onclick="this.style.transform='scale(1.05) rotate(-1deg)'; setTimeout(()=>this.style.transform='', 400)"><img src="https://birthdaysx.github.io/Foto4/kkk6.jpeg" alt="Memory 6"></div>
             <div class="photo-card" onclick="this.style.transform='scale(1.05) rotate(1deg)'; setTimeout(()=>this.style.transform='', 400)"><img src="https://birthdaysx.github.io/Foto4/kkk7.jpeg" alt="Memory 7"></div>
         </div>
-        <p class="italic text-xs text-sky-200 mb-4 px-10 drop-shadow-md">"Scroll down to see all our memories"</p> 
+        <p class="italic text-xs text-sky-200 mb-4 px-10 drop-shadow-md">"Scroll down to see all your memories"</p>  
         <div class="flex space-x-4">  
             <button onclick="nextPage(4)" class="bg-sky-50 text-sky-600 border-2 border-sky-600 px-8 py-3 rounded-full font-bold shadow-lg shadow-sky-900/30 hover:bg-sky-100">Back</button>  
             <button onclick="nextPage(6)" class="bg-sky-600 text-sky-50 px-10 py-3 rounded-full font-bold shadow-lg shadow-sky-900/40 hover:bg-sky-500">Continue ✨</button> 
@@ -805,7 +805,7 @@
                 document.getElementById('seal-loading').classList.add('hidden');
                 document.getElementById('final-sent').classList.remove('hidden');
                 
-                const d = new Date(`06 April 2026`);  
+                const d = new Date(`11 April 2026`);   
                 const opt = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
                 document.getElementById('date-display').innerText = d.toLocaleDateString('en-US', opt);
             }, 3000);
