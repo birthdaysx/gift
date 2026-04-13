@@ -311,9 +311,9 @@
         let cinematicDone = false;       
     
         // PESAN UNTUK DIKETIK  
-        const messageToType = "Hii selamat tanggal 28 ya, Semoga Semesta selalu memberimu kemudahan atas segala usaha, setiap langkah kamu selalu ditemani takdir yang bersahabat dan dikelilingi orang-orang baik dimana pun kamu berada.\n\n"+"semoga doa-doa baik selalu menemukan jalan untuk sampai ke kamu. Aamiin yarabbal alamiin.\n\n"+"sekali lagi ya, “happy birthday, you deserve the absolute world and i'ii always support you";  
+        const messageToType = "Hii selamat tanggal 28 ya, Semoga Semesta selalu memberimu kemudahan atas segala usaha, setiap langkah kamu selalu ditemani takdir yang bersahabat dan dikelilingi orang-orang baik dimana pun kamu berada.\n\n"+"semoga doa-doa baik selalu menemukan jalan untuk sampai ke kamu. Aamiin yarabbal alamiin.\n\n"+"sekali lagi ya, “happy birthday, you deserve the absolute world and i'ii always support you”";   
  
-        // DAFTAR UCAPAN (WISHES)     
+        // DAFTAR UCAPAN (WISHES)      
         const wishes = [["HAPPY","BIRTHDAY"],["ITS, YOUR","BIRTHDAY"],["GREATEFULL","FOR YOU"],["GROWING","OLDER,"],["GLOWING","BRIGHTER"]];  
         let wishIndex = 0;   
  
@@ -410,11 +410,11 @@
                     for (let i = 0; i < 280; i++) { 
                         particles.push(new SharpParticle(this.x, this.y, `#9f3a33`, true)); 
                     }
-                    setTimeout(() => createTextParticles("Smile 😃", this.x, this.y, "#ffffff"), 1); 
+                    setTimeout(() => createTextParticles(["Smile 😃","28 🎂"], this.x, this.y, "#ffffff"), 1); 
                     cinematicDone = true; 
                     setTimeout(() => { nextPageBtn.style.display = 'block'; }, 5000);                   
                 } else {   
-                    for (let i = 0; i < 50; i++) {            
+                    for (let i = 0; i < 50; i++) {             
                         particles.push(new SharpParticle(this.x, this.y, this.color));
                     }
                 } 
