@@ -431,7 +431,7 @@
 
         let width, height;
 
-        // Kontrol Status Main Loop & Matrix State (Pindahkan ke atas agar tidak ada ReferenceError saat resize)
+        // Kontrol Status Main Loop & Matrix State
         let runFireworks = false;
         let runMatrix = false;
         let m_state = "SWEEP"; 
@@ -775,6 +775,9 @@
             return points;
         }
 
+        // ========================================================
+        // FIX: FUNGSI YANG DIPERBARUI AGAR TEKS DINAMIS DAN RESPONSIVE
+        // ========================================================
         function getTextPoints(text) {
             const points = [];
             const tempCanvas = document.createElement('canvas');
@@ -782,14 +785,26 @@
             tempCanvas.width = width;
             tempCanvas.height = height;
             
-            const isTransition = isNaN(text) && text.length <= 4 || text.length === 1;
-            let tSize;
-            if (isTransition) {
-                tSize = !isNaN(text) ? Math.min(width / 2.2, 400) : Math.min(width / 3.5, 250);
-            } else {
-                tSize = Math.min(width / 4, 180);
-            }
+            // Cek apakah ini kata yang pendek (angka countdown)
+            const isSingle = text.length <= 2; 
+            
+            // Tentukan maksimal besarnya font (biar gak raksasa di layar lebar)
+            const maxFontSize = isSingle ? Math.min(width / 2, 300) : Math.min(width / 4, 150);
 
+            // Tes font size dengan ukuran 100px dulu untuk hitung lebarnya
+            tempCtx.font = `bold 100px Arial`;
+            const textWidth = tempCtx.measureText(text).width;
+            
+            // Kita ingin teks mengambil paling banyak 85% dari lebar layar HP
+            const maxWidth = width * 0.85;
+            
+            // Hitung skala font-nya agar pas di dalam layar
+            let tSize = (maxWidth / textWidth) * 100;
+
+            // Batasi dengan ukuran font maksimal yang wajar
+            tSize = Math.min(tSize, maxFontSize);
+
+            // Terapkan ukuran font baru yang dihitung
             tempCtx.font = `bold ${tSize}px Arial`;
             tempCtx.textAlign = 'center';
             tempCtx.textBaseline = 'middle';
@@ -799,6 +814,7 @@
             const data = tempCtx.getImageData(0, 0, width, height).data;
             for (let y = 0; y < height; y += 5) {
                 for (let x = 0; x < width; x += 5) {
+                    // Ambil pixel putih untuk dijadikan partikel matrix
                     if (data[(y * width + x) * 4 + 3] > 128) points.push({ x, y }); 
                 }
             }
@@ -844,7 +860,7 @@
             await new Promise(r => setTimeout(r, 2200));  
             m_isExploding = false;
 
-            const finalWords = ["I", "Love", "You", "  Sayangnya", "Aku❤️"];
+            const finalWords = ["I", "Love", "You", "Sayangnya", "Aku❤️"]; 
             for (let word of finalWords) {
                 updateParticleTargets(word);
                 await new Promise(r => setTimeout(r, 2000));  
@@ -853,7 +869,7 @@
             await new Promise(r => setTimeout(r, 800)); 
             m_isExploding = false;
             
-            m_state = "FINAL_HEART";
+            m_state = "FINAL_HEART"; 
             document.getElementById('credit-text').style.display = 'block'; // Tampilkan credit
 
             // TAMPILKAN GAMBAR LINK SETELAH 1.5 DETIK
