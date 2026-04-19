@@ -7,7 +7,7 @@
     <!-- Menambahkan link font Quicksand agar terbaca di canvas -->
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap" rel="stylesheet">
     <style> 
-        body {       
+        body {        
             margin: 0;     
             padding: 0; 
             background-color: #000; 
@@ -373,7 +373,7 @@
                 // Jika itu partikel Nama, pudar sangat lambat (bertahan lama).
                 // Jika partikel Wishes, pudar lebih cepat.
                 if (this.isText) {
-                    this.decay = this.isName ? 0.008 : 0.015;  
+                    this.decay = this.isName ? 0.008 : 0.015; 
                 } else {
                     this.decay = isBig ? random(0.0015, 0.012) : random(0.015, 0.03);
                 }
@@ -477,7 +477,10 @@
             
             // Perbedaan Font: Yang Nama (Tebal/Impact), Yang Wishes (Quicksand bawaan)
             if (isName) {
-                tCtx.font = "900 52px 'Arial Black', Impact, sans-serif";
+                // Menggunakan font sistem bawaan Apple/HP agar lebih bersih, tidak menumpuk, dan mudah dibaca
+                tCtx.font = "bold 44px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, sans-serif";
+                // Menambahkan jarak antar huruf agar partikel tidak saling menempel
+                tCtx.letterSpacing = "2px"; 
             } else {
                 tCtx.font = "bold 50px 'Quicksand', sans-serif";
             }
