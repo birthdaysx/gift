@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap" rel="stylesheet">
     <style> 
         body {       
-            margin: 0;      
+            margin: 0;     
             padding: 0; 
             background-color: #000; 
             overflow: hidden;
@@ -46,14 +46,14 @@
 
         /* Khusus halaman 3 agar bisa di-scroll */
         #page-3 {
-            position: absolute; /* Ganti fixed ke absolute agar bisa scroll */
+            position: absolute; 
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start; /* Mulai dari atas */
+            justify-content: flex-start; 
             align-items: center;
             padding-bottom: 50px;
-            overflow-y: auto; /* Aktifkan scroll vertikal */
+            overflow-y: auto; 
             background: rgba(0, 0, 0, 0.7);
         }
 
@@ -101,7 +101,6 @@
         /* Halaman 2: Kembang Api Overlay */
         #page-2 {
             pointer-events: auto;
-            /* Pastikan z-index cukup tinggi dan background transparan agar klik tembus */
             background: transparent;
         }
 
@@ -129,12 +128,12 @@
             box-shadow: 0 0 20px white;
         }
 
-        /* --- STYLE GALERI FOTO (Disesuaikan untuk 13 Foto) --- */
+        /* --- STYLE GALERI FOTO (13 Foto) --- */
         .photo-gallery {
             position: relative;
             width: 100%;
             max-width: 650px; 
-            height: 1200px; /* Diperpanjang agar 13 foto muat ke bawah */
+            height: 1200px; 
             margin: 20px auto 0 auto; 
             flex-shrink: 0;
         }
@@ -354,31 +353,50 @@
         const random = (min, max) => Math.random() * (max - min) + min; 
  
         class SharpParticle {
-            constructor(x, y, color, isBig = false, targetX = null, targetY = null) {
+            constructor(x, y, color, isBig = false, targetX = null, targetY = null, isName = false) {
                 this.x = x;
                 this.y = y;
                 this.color = color;
                 this.targetX = targetX;
                 this.targetY = targetY;
+                this.isText = targetX !== null;
+                this.isName = isName;
                 
                 const angle = Math.random() * Math.PI * 2;
                 const speed = isBig ? random(8, 25) : random(2, 6);
                 this.velocity = { x: Math.cos(angle) * speed, y: Math.sin(angle) * speed };
                 
                 this.friction = 0.94;
-                this.gravity = (targetX !== null) ? 0 : 0.025;
+                this.gravity = this.isText ? 0 : 0.025;
                 this.opacity = 1;
-                this.decay = (targetX !== null) ? 0.0001 : (isBig ? random(0.0015, 0.012) : random(0.015, 0.03));
+                
+                // Jika itu partikel Nama, pudar sangat lambat (bertahan lama).
+                // Jika partikel Wishes, pudar lebih cepat.
+                if (this.isText) {
+                    this.decay = this.isName ? 0.008 : 0.015;  
+                } else {
+                    this.decay = isBig ? random(0.0015, 0.012) : random(0.015, 0.03);
+                }
             }
             draw() {
                 ctx.save();
                 ctx.globalAlpha = this.opacity;
                 ctx.beginPath();
-                ctx.moveTo(this.x, this.y);
-                ctx.lineTo(this.x - (this.velocity.x * 3), this.y - (this.velocity.y * 3));
-                ctx.strokeStyle = this.color;
-                ctx.lineWidth = 1.5;
-                ctx.stroke();
+                
+                // Mencegah partikel hilang tiba-tiba sebelum opasitas habis saat kecepatannya nol
+                // Berubah perlahan dari garis menjadi titik yang manis
+                if (this.isText && Math.abs(this.velocity.x) < 0.2 && Math.abs(this.velocity.y) < 0.2) {
+                    ctx.arc(this.x, this.y, 1.2, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                } else {
+                    ctx.moveTo(this.x, this.y);
+                    ctx.lineTo(this.x - (this.velocity.x * 3), this.y - (this.velocity.y * 3));
+                    ctx.strokeStyle = this.color;
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
+                }
+                
                 ctx.restore();
             }
             update() {
@@ -437,7 +455,8 @@
                     for (let i = 0; i < 280; i++) { 
                         particles.push(new SharpParticle(this.x, this.y, `#9f3a33`, true)); 
                     }
-                    setTimeout(() => createTextParticles([" Fransiska Rince","Hotnida Haloho"], this.x, this.y, "#ffffff"), 1); 
+                    // Mengirimkan isName = true (teks nama utama)
+                    setTimeout(() => createTextParticles([" Fransiska Rince","Hotnida Haloho"], this.x, this.y, "#ffffff", true), 1); 
                     cinematicDone = true; 
                     setTimeout(() => { nextPageBtn.style.display = 'block'; }, 5000);                  
                 } else {   
@@ -448,14 +467,21 @@
             }  
         }  
 
-        function createTextParticles(text, centerX, centerY, color) {
+        function createTextParticles(text, centerX, centerY, color, isName = false) {
             const tempCanvas = document.createElement('canvas');  
             const tCtx = tempCanvas.getContext('2d');
             tempCanvas.width = 600;
             tempCanvas.height = 200; 
             
             tCtx.fillStyle = 'red'; 
-            tCtx.font = "bold 50px 'Quicksand', sans-serif"; 
+            
+            // Perbedaan Font: Yang Nama (Tebal/Impact), Yang Wishes (Quicksand bawaan)
+            if (isName) {
+                tCtx.font = "900 52px 'Arial Black', Impact, sans-serif";
+            } else {
+                tCtx.font = "bold 50px 'Quicksand', sans-serif";
+            }
+            
             tCtx.textAlign = 'center';
             tCtx.textBaseline = 'middle';
 
@@ -472,7 +498,8 @@
                     if (data[(y * 600 + x) * 4 + 3] > 128) {
                         const tx = centerX + (x - 300);
                         const ty = centerY + (y - 100);
-                        particles.push(new SharpParticle(centerX, centerY, color, true, tx, ty));
+                        // Melempar status isName ke dalam particle
+                        particles.push(new SharpParticle(centerX, centerY, color, true, tx, ty, isName));
                     }
                 }
             }
@@ -534,7 +561,8 @@
                 const randomColor = `hsl(${Math.random() * 360}, 100%, 75%)`;
                 const clickX = e.clientX;
                 const clickY = e.clientY;
-                createTextParticles(text, clickX, clickY, randomColor);
+                // Mengirimkan isName = false (teks wishes normal)
+                createTextParticles(text, clickX, clickY, randomColor, false);
                 wishIndex = (wishIndex + 1) % wishes.length;
             }
         }, { passive: true });
@@ -555,7 +583,7 @@
                 setTimeout(() => item.classList.add('reveal'), i * 300);
             });
 
-            // Waktu kemunculan pesan diperlambat menyesuaikan dengan 13 foto yang muncul berurutan (13 * 300ms)
+            // Waktu kemunculan pesan
             setTimeout(() => {
                 messageCard.classList.add('reveal');
                 if(window.innerWidth < 768) scrollHint.style.display = 'block';
