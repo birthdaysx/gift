@@ -548,10 +548,10 @@
             explode() {
                 if (this.isCinematic) { 
                     for (let i = 0; i < 280; i++) {
-                        // UBAH: Warna partikel ledakan utama jadi Baby Blue (#89CFF0)
+                        // UBAH: Warna partikel ledakan utama jadi Baby Blue (#89CFF0) 
                         fw_particles.push(new SharpParticle(this.x, this.y, `#89CFF0`, true));
                     }
-                    setTimeout(() => createTextParticles(["Alfi","Zhafira❤️"], this.x, this.y, "#ffffff"), 1);
+                    setTimeout(() => createTextParticles(["Happy Birthday","Caa❤️"], this.x, this.y, "#ffffff"), 1);
                     fw_cinematicDone = true;
                     
                     // UBAH: Teks Wishes muncul SETELAH ledakan utama  
@@ -860,11 +860,11 @@
             await new Promise(r => setTimeout(r, 2200));  
             m_isExploding = false;
 
-            const finalWords = ["I", "Love", "You", "Sayangnya", "Aku❤️"]; 
+            const finalWords = ["I", "Hope", "You'll", "Be", "Mine","Now","And","Forever"]; 
             for (let word of finalWords) {
                 updateParticleTargets(word);
                 await new Promise(r => setTimeout(r, 2000));  
-            }
+            } 
             m_isExploding = true;
             await new Promise(r => setTimeout(r, 800)); 
             m_isExploding = false;
@@ -934,13 +934,13 @@
                 ctxM.fillStyle = `rgba(255, 255, 255, ${m_textOpacity})`;
 
                 // Jarak antar baris
-                const lineHeight = fontSize * 1.5; 
+                const lineHeight = fontSize * 1.5;  
 
                 // Baris 1 (Posisi sedikit di atas tengah)
-                ctxM.fillText("til death do", width / 2, (height / 2) - (lineHeight / 2));
+                ctxM.fillText("i'm always proud of you", width / 2, (height / 2) - (lineHeight / 2));
                 
-                // Baris 2 (Posisi sedikit di bawah tengah) 
-                ctxM.fillText("us part❤️", width / 2, (height / 2) + (lineHeight / 2));
+                // Baris 2 (Posisi sedikit di bawah tengah)
+                ctxM.fillText("and i love you🩵", width / 2, (height / 2) + (lineHeight / 2));
             }
         }
 
