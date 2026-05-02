@@ -651,11 +651,11 @@
 
         // LETTER (Page 5)
         // (Perubahan 4) Pesan Surat
-        const letterText = "Terimakasih telah hadir memberi warna dihidupku, tetep jadi laki laki yang tidak pernah berubah dari awal hingga akhir yaa ❤️ semangat berprosesnya, tetep jadi orang baik yg ku kenal yaa, nada bicara yang soft spoken itu membuatku ingin terus berada didekatmu, i love you more than anything, nanti kita rayakan tanpa jarak dan tanpa layar yaa sayangku";
+        const letterText = "Terimakasih telah hadir memberi warna dihidupku, tetep jadi laki laki yang tidak pernah berubah dari awal hingga akhir yaa ❤️ semangat berprosesnya, tetep jadi orang baik yg ku kenal yaa, nada bicara yang soft spoken itu membuatku ingin terus berada didekatmu, i love you more than anything, nanti kita rayakan tanpa jarak dan tanpa layar yaa sayangku\nTerima kasih ya udah selalu ada, udah jadi alasan buat aku senyum setiap hari. Kamu itu hadiah terindah yang pernah alam semesta kasih ke aku. Aku harap kamu tau seberapa besar arti kamu buat aku. Stay with me for a long time, okay? I love you ❤️❤️";
         let typingIndex = 0;
 
         function openLetter() {
-            document.getElementById('envelope').classList.add('opening'); document.getElementById('env-hint').style.display = 'none';
+            document.getElementById('envelope').classList.add('opening'); document.getElementById('env-hint').style.display = 'none'; 
             setTimeout(() => { document.getElementById('letter-box').classList.add('open'); setTimeout(typeWriter, 500); }, 800);
         }
         function typeWriter() {
