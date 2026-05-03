@@ -326,12 +326,14 @@
         const random = (min, max) => Math.random() * (max - min) + min;
 
         class SharpParticle {
-            constructor(x, y, color, isBig = false, targetX = null, targetY = null) {
+            constructor(x, y, color, isBig = false, targetX = null, targetY = null, isName = false) {
                 this.x = x;
                 this.y = y;
                 this.color = color;
                 this.targetX = targetX;
                 this.targetY = targetY;
+                this.isName = isName;
+                this.timer = 0;
                 
                 const angle = Math.random() * Math.PI * 2;
                 const speed = isBig ? random(8, 25) : random(2, 6);
@@ -347,9 +349,20 @@
                 ctx.globalAlpha = this.opacity;
                 ctx.beginPath();
                 ctx.moveTo(this.x, this.y);
-                ctx.lineTo(this.x - (this.velocity.x * 3), this.y - (this.velocity.y * 3));
-                ctx.strokeStyle = this.color;
-                ctx.lineWidth = 1.5;
+                
+                if (this.isName) {
+                    // KHUSUS NAMA UTAMA: Tambahan +0.1 agar teks tidak menghilang saat diam
+                    ctx.lineTo(this.x - (this.velocity.x * 3) + 0.1, this.y - (this.velocity.y * 3));
+                    ctx.strokeStyle = this.color;
+                    ctx.lineWidth = 2.0; 
+                    ctx.lineCap = 'round';
+                } else {
+                    // WISHES: 100% kembali ke bentuk awal (akan hilang sendiri saat berhenti)
+                    ctx.lineTo(this.x - (this.velocity.x * 3), this.y - (this.velocity.y * 3));
+                    ctx.strokeStyle = this.color;
+                    ctx.lineWidth = 1.5;
+                }
+                
                 ctx.stroke();
                 ctx.restore();
             }
@@ -359,6 +372,23 @@
                     this.y += (this.targetY - this.y) * 0.1;
                     this.velocity.x *= 0.9;
                     this.velocity.y *= 0.9;
+                    
+                    // KHUSUS NAMA UTAMA: jatuh setelah tertahan sekitar 2,5 detik
+                    if (this.isName) {
+                        this.timer++;
+                        if (this.timer > 150) { 
+                            this.targetX = null;
+                            this.targetY = null;
+                            this.gravity = 0.04; // Gravitasi kecil agar sisa ledakan perlahan turun
+                            this.decay = random(0.015, 0.03); 
+                            
+                            // Efek pecah/menyebar ke segala arah seperti ledakan kembang api
+                            const scatterAngle = Math.random() * Math.PI * 2;
+                            const scatterSpeed = random(2, 6);
+                            this.velocity.x = Math.cos(scatterAngle) * scatterSpeed;
+                            this.velocity.y = Math.sin(scatterAngle) * scatterSpeed; 
+                        }
+                    }
                 } else {
                     this.velocity.x *= this.friction;
                     this.velocity.y *= this.friction;
@@ -409,9 +439,17 @@
                     for (let i = 0; i < 280; i++) {
                         particles.push(new SharpParticle(this.x, this.y, `#9f3a33`, true));
                     }
-                    setTimeout(() => createTextParticles(["My Love","Jeriko","Tampubolon💙"], this.x, this.y, "#ffffff"), 1);
-                    cinematicDone = true;
-                    setTimeout(() => { nextPageBtn.style.display = 'block'; }, 5000);     
+                    
+                    // Set isName = true khusus untuk nama ini
+                    setTimeout(() => createTextParticles(["My Love","Jeriko","Tampubolon💙"], this.x, this.y, "#ffffff", true), 1);
+                    
+                    // Beri waktu 3 detik baru layar bisa diklik untuk wishes
+                    setTimeout(() => {
+                        cinematicDone = true;
+                    }, 3000);
+
+                    // Tombol next dimunculkan
+                    setTimeout(() => { nextPageBtn.style.display = 'block'; }, 4500);    
                 } else {
                     for (let i = 0; i < 50; i++) {
                         particles.push(new SharpParticle(this.x, this.y, this.color)); 
@@ -420,7 +458,7 @@
             }
         } 
 
-        function createTextParticles(text, centerX, centerY, color) { 
+        function createTextParticles(text, centerX, centerY, color, isName = false) { 
             const tempCanvas = document.createElement('canvas');
             const tCtx = tempCanvas.getContext('2d');
             tempCanvas.width = 600;
@@ -445,7 +483,7 @@
                     if (data[(y * 600 + x) * 4 + 3] > 128) {
                         const tx = centerX + (x - 300);
                         const ty = centerY + (y - 100);
-                        particles.push(new SharpParticle(centerX, centerY, color, true, tx, ty));
+                        particles.push(new SharpParticle(centerX, centerY, color, true, tx, ty, isName));
                     }
                 }
             }
@@ -507,7 +545,8 @@
                 const randomColor = `hsl(${Math.random() * 360}, 100%, 75%)`;
                 const clickX = e.clientX;
                 const clickY = e.clientY;
-                createTextParticles(text, clickX, clickY, randomColor);
+                // Wishes dikirim dengan isName = false, jadi persis seperti awal (tidak dirubah sama sekali)
+                createTextParticles(text, clickX, clickY, randomColor, false);
                 wishIndex = (wishIndex + 1) % wishes.length;
             }
         }, { passive: true });
