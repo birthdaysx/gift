@@ -204,9 +204,8 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.3); border: 2px solid #052e16;
             display: flex; flex-direction: column; align-items: center; overflow: hidden;
         }
-        .cassette-container:nth-child(1) .cassette { transform: rotateZ(-3deg); }
-        .cassette-container:nth-child(2) .cassette { transform: rotateZ(2deg); }
-        .cassette-container:nth-child(3) .cassette { transform: rotateZ(-1.5deg); }
+        .cassette-container:nth-child(even) .cassette { transform: rotateZ(1.5deg); }
+        .cassette-container:nth-child(odd) .cassette { transform: rotateZ(-1.5deg); }
         .cassette-container:hover .cassette { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) translateY(-10px); box-shadow: 0 20px 30px rgba(0,0,0,0.4); z-index: 50; }
         
         .screw { position: absolute; width: 8px; height: 8px; background: #166534; border-radius: 50%; box-shadow: inset 1px 1px 2px rgba(0,0,0,0.5); }
@@ -331,7 +330,7 @@
         <img src="https://media.tenor.com/VlPkK7uQnj4AAAAi/macha-and-chasen-spray-valorant.gif" class="bg-sticker" style="bottom: 5%; right: 5%; animation-delay: 0.5s;">
         <img src="https://media.tenor.com/8BdlwK1zBUoAAAAi/keropp.gif" class="bg-sticker" style="bottom: 2%; left: 40%; transform: translateX(-50%); animation-delay: 1.5s;">
             
-        <div id="page0" class="page-container">      
+        <div id="page0" class="page-container">     
             <div class="glass-card"> 
                 <img src="https://media.tenor.com/DhqhjsSjIsEAAAAi/sanrio.gif" alt="Sticker" class="w- h-32 rounded-lg mb-4 relative z-10">  
                 <h1 class="font-big text-xl mb-2 relative z-10">It's Your Special Day...</h1>
@@ -411,6 +410,7 @@
             
             <div id="cassette-list" class="w-full max-w-xs mb-8 h-[55vh] overflow-y-auto px-4 pt-4">
                 
+                <!-- Existing Songs -->
                 <div class="cassette-container" onclick="playSong('https://birthdaysx.github.io/Musik/nothing-is-impossible.mp3', this)">
                     <div class="cassette">
                         <div class="screw top-l"></div><div class="screw top-r"></div><div class="screw bot-l"></div><div class="screw bot-r"></div>
@@ -455,6 +455,83 @@
                         <div class="cassette-bottom"></div>
                     </div>
                 </div>
+
+                <!-- New Songs --> 
+                <div class="cassette-container" onclick="playSong('https://birthdaysx.github.io/Musik/love-your-self.mp3', this)">
+                    <div class="cassette">
+                        <div class="screw top-l"></div><div class="screw top-r"></div><div class="screw bot-l"></div><div class="screw bot-r"></div>
+                        <div class="cassette-label">
+                            <p class="font-handwriting font-bold text-yellow-900 text-lg leading-tight text-center">Love Yourself</p>  
+                            <p class="font-handwriting text-yellow-600 text-sm">Justin Bieber</p>
+                            <div class="cassette-window">
+                                <div class="sprocket"></div>
+                                <div class="sprocket"></div>
+                            </div>
+                        </div>
+                        <div class="cassette-bottom"></div>
+                    </div>
+                </div>
+
+                <div class="cassette-container" onclick="playSong('https://birthdaysx.github.io/Musik/dirimu-yang-dulu.mp3', this)">
+                    <div class="cassette">
+                        <div class="screw top-l"></div><div class="screw top-r"></div><div class="screw bot-l"></div><div class="screw bot-r"></div>
+                        <div class="cassette-label">
+                            <p class="font-handwriting font-bold text-yellow-900 text-lg leading-tight text-center">Dirimu Yang Dulu</p>  
+                            <p class="font-handwriting text-yellow-600 text-sm">Anggis Devaki</p>
+                            <div class="cassette-window">
+                                <div class="sprocket"></div>
+                                <div class="sprocket"></div>
+                            </div>
+                        </div>
+                        <div class="cassette-bottom"></div>
+                    </div>
+                </div>
+
+                <div class="cassette-container" onclick="playSong('https://birthdaysx.github.io/Musik/kangen.mp3', this)">
+                    <div class="cassette">
+                        <div class="screw top-l"></div><div class="screw top-r"></div><div class="screw bot-l"></div><div class="screw bot-r"></div>
+                        <div class="cassette-label">
+                            <p class="font-handwriting font-bold text-yellow-900 text-lg leading-tight text-center">Kangen</p>  
+                            <p class="font-handwriting text-yellow-600 text-sm">Dewa 19</p>
+                            <div class="cassette-window">
+                                <div class="sprocket"></div>
+                                <div class="sprocket"></div>
+                            </div>
+                        </div>
+                        <div class="cassette-bottom"></div>
+                    </div>
+                </div>
+
+                <div class="cassette-container" onclick="playSong('https://birthdaysx.github.io/Musik/bittersweet.mp3', this)">
+                    <div class="cassette">
+                        <div class="screw top-l"></div><div class="screw top-r"></div><div class="screw bot-l"></div><div class="screw bot-r"></div>
+                        <div class="cassette-label">
+                            <p class="font-handwriting font-bold text-yellow-900 text-lg leading-tight text-center">BitterSweet</p>  
+                            <p class="font-handwriting text-yellow-600 text-sm">Madison Beer</p>
+                            <div class="cassette-window">
+                                <div class="sprocket"></div>
+                                <div class="sprocket"></div>
+                            </div>
+                        </div>
+                        <div class="cassette-bottom"></div>
+                    </div> 
+                </div>
+
+                <div class="cassette-container" onclick="playSong('https://birthdaysx.github.io/Musik/bawa-dia-kembali.mp3', this)">
+                    <div class="cassette">
+                        <div class="screw top-l"></div><div class="screw top-r"></div><div class="screw bot-l"></div><div class="screw bot-r"></div>
+                        <div class="cassette-label">
+                            <p class="font-handwriting font-bold text-yellow-900 text-lg leading-tight text-center">Bawa Dia Kembali</p>  
+                            <p class="font-handwriting text-yellow-600 text-sm">Mahalini</p>
+                            <div class="cassette-window">
+                                <div class="sprocket"></div>
+                                <div class="sprocket"></div>
+                            </div>
+                        </div>
+                        <div class="cassette-bottom"></div>
+                    </div>
+                </div>
+
             </div>
 
             <div class="flex space-x-4">
@@ -679,10 +756,11 @@
             updateParticleTargets(["Hello", "Cath"]); await new Promise(r => setTimeout(r, 3500));
             updateParticleTargets(["Happy", "Birthday", "ya"]); await new Promise(r => setTimeout(r, 3500));
             updateParticleTargets(["Sehat", "Selalu"]); await new Promise(r => setTimeout(r, 3500)); 
-            updateParticleTargets(["Sukses", "Selalu"]); await new Promise(r => setTimeout(r, 3500)); 
+            updateParticleTargets(["Sukses", "Selalu"]); await new Promise(r => setTimeout(r, 3500));
+            updateParticleTargets(["Tambah", "Cantik"]); await new Promise(r => setTimeout(r, 3500)); 
             mIsExploding = true; await new Promise(r => setTimeout(r, 1000)); mIsExploding = false;
             mIsExploding = true; await new Promise(r => setTimeout(r, 800)); mIsExploding = false;
-            mState = "FINAL_HEART";
+            mState = "FINAL_HEART"; 
         } 
 
         function drawMatrix() {
@@ -868,9 +946,9 @@
             } setTimeout(type, 500);
         }
 
-        let typeTimeoutP7; 
+        let typeTimeoutP7;  
         function startTypewriterP7() { 
-            const txt = "cath aku sayang banget sama kamu, aku janji bakalan tetep sama kamu di setiap keadaan apapun, maaf kalo ku kadang  ngeselin ya...hehehe...kamu cewe pertama yang gak pernah dry text ke aku, saling ksih tau perasaan, saling hibur, kalo aku sedih, kamu juga sedih, kalo kamu happy aku juga happy, aku bahagia banget karna bisa keteku cewe kayak kamu, Aku gapeduli sisi buruk kamu sama sekali, mungkin sedikit. Kamu tau ga kalo sebenernya aku masih belom bisa move on dari kamu yang lama, kalo bisa lagi dong...hehehe<br><br><span class='text-green-600 font-bold'>from :<br>keropiiboiii</span>";
+            const txt = "cath aku sayang banget sama kamu, aku janji bakalan tetep sama kamu di setiap keadaan apapun, maaf kalo ku kadang  ngeselin ya...hehehe...kamu cewe pertama yang gak pernah dry text ke aku, saling kasih tau perasaan, saling hibur, kalo aku sedih, kamu juga sedih, kalo kamu happy aku juga happy, aku bahagia banget karna bisa ketemu cewe kayak kamu, Aku gapeduli sisi buruk kamu sama sekali, mungkin sedikit. Kamu tau ga kalo sebenernya aku masih belom bisa move on dari kamu yang lama, kalo bisa lagi dong...maaf banget ya kalo aku kurang berguna buat kamu, benciin aku aja gapapa kok ku ikhlas and find a better life, okayy?...thankss sudah hadir dalam hidupku aku bersyukur banget karna kamu udah datang ke hidupku sekaligus cewe pertama yang baik, peduli, perhatian sama aku...🥺🥺🥺<br><br><span class='text-green-600 font-bold'>from :<br>keropiiboiii</span>";
             const target = document.getElementById('type-p7'); target.innerHTML = ""; let i = 0;
             clearTimeout(typeTimeoutP7);
             function type() {
@@ -946,7 +1024,23 @@
             outsideColor: new THREE.Color(0x3b82f6),  
         };
 
-        const heartImages = ['https://birthdaysx.github.io/Foto5/ss1.jpeg', 'https://birthdaysx.github.io/Foto5/ss2.jpeg', 'https://birthdaysx.github.io/Foto5/ss3.jpeg', 'https://birthdaysx.github.io/Foto5/ss4.jpeg', 'https://birthdaysx.github.io/Foto5/ss5.jpeg', 'https://birthdaysx.github.io/Foto5/ss6.jpeg', 'https://birthdaysx.github.io/Foto5/ss7.jpeg', 'https://birthdaysx.github.io/Foto5/ss8.jpeg', 'https://birthdaysx.github.io/Foto5/ss9.jpeg', 'https://birthdaysx.github.io/Foto5/ss10.jpeg'];   
+        const heartImages = [
+            'https://birthdaysx.github.io/Foto5/ss1.jpeg', 
+            'https://birthdaysx.github.io/Foto5/ss2.jpeg', 
+            'https://birthdaysx.github.io/Foto5/ss3.jpeg', 
+            'https://birthdaysx.github.io/Foto5/ss4.jpeg', 
+            'https://birthdaysx.github.io/Foto5/ss5.jpeg', 
+            'https://birthdaysx.github.io/Foto5/ss6.jpeg', 
+            'https://birthdaysx.github.io/Foto5/ss7.jpeg', 
+            'https://birthdaysx.github.io/Foto5/ss8.jpeg', 
+            'https://birthdaysx.github.io/Foto5/ss9.jpeg', 
+            'https://birthdaysx.github.io/Foto5/ss10.jpeg',
+            'https://birthdaysx.github.io/Foto5/ss11.jpeg',
+            'https://birthdaysx.github.io/Foto5/ss12.jpeg',
+            'https://birthdaysx.github.io/Foto5/ss13.jpeg',
+            'https://birthdaysx.github.io/Foto5/ss14.jpeg',
+            'https://birthdaysx.github.io/Foto5/ss15.jpeg'
+        ];   
         const numGroups = heartImages.length;
  
         const maxDensity = 50000; const minDensity = 2000; const maxGroupsForScale = 14; let pointsPerGroup;
@@ -1216,7 +1310,7 @@
 
             scene.traverse(obj => {
                 if (obj.isPoints && obj.userData.materialNear && obj.userData.materialFar) {
-                    const positionAttr = obj.geometry.getAttribute('position'); let isClose = false;
+                    const positionAttr = obj.geometry.getAttribute('position'); let isClose = false; 
                     for (let i = 0; i < positionAttr.count; i++) {
                         const distance = camera.position.distanceTo(new THREE.Vector3(positionAttr.getX(i) + obj.position.x, positionAttr.getY(i) + obj.position.y, positionAttr.getZ(i) + obj.position.z));
                         if (distance < 60) { isClose = true; break; }
