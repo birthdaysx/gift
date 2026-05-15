@@ -258,7 +258,7 @@
  
     <!-- HALAMAN 1 -->
     <div id="page-1" class="page">
-        <!-- Mengubah nama menjadi MEILIYANI -->
+        <!-- Mengubah nama menjadi 
         <h1>Happy Birthday <br>Sayang🤍</h1>
         <button id="gift-button" aria-label="Buka Kado">🎁</button>
         <p style="color: #888; margin-top: 30px; letter-spacing: 1px;">Klik kado untuk kejutan</p>
@@ -287,8 +287,8 @@
  
         <!-- KARTU PESAN -->
         <div class="message-card" id="message-card">
-            <!-- Mengubah nama menjadi MEILIYANI -->
-            <h2>Happy Birthday<br>Meiliyani🤍</h2> 
+            <!-- Mengubah nama menjadi -->
+            <h2>Happy Birthday<br>Sayangg🤍</h2> 
             <p id="typing-text"></p>
             <p style="font-style: italic; margin-top: 15px;">From Your Boyfriend</p>
             <button class="restart-btn" onclick="location.reload()">Mulai Lagi</button>
@@ -305,7 +305,7 @@
         const nextPageBtn = document.getElementById('next-page-btn');
         const messageCard = document.getElementById('message-card');
         const photoItems = document.querySelectorAll('.photo-item');
-        const scrollHint = document.getElementById('scroll-hint');
+        const scrollHint = document.getElementById('scroll-hint'); 
 
         let width, height;
         let particles = [];
@@ -313,12 +313,12 @@
         let isStarted = false;
         let cinematicDone = false; 
  
-        // PESAN UNTUK DIKETIK (Disisipkan nama MEILIYANI)
-        const messageToType = "Tepat hari ini 16 Mei 2026, it’s your special day sayangg\n"+"wish u all the best bubbiee🤍 maacii sayang udaa lahir kedunia ini dan jadi pasanganku. selamat bertumbuh jadi versi yang lebih baik setiap harinya, sayangku, cintaku. panjang umur dan sehat selalu ya sayangg, biar kita bisa bareng terus🥹💗 harapan akuu dihari ulang tahun sayangg, apapun yang sayang minta, cari, dan harapkan, semoga satu persatu terwujud, hari ini dan seterusnya 🤍 semoga tuhan mengabulkan hal-hal baik yang benar-benar diinginkan hati sayangg. happy birthday MEILIYANI💐 aku akan selalu ada buat sayang, disetiap proses, disetiap hari, aku selalu sama sayangg 💗💗";
+        // PESAN UNTUK DIKETIK (Disisipkan nama 
+        const messageToType = "Tepat hari ini 16 Mei 2026, it’s your special day sayangg\n"+"wish u all the best bubbiee🤍 maacii sayang udaa lahir kedunia ini dan jadi pasanganku. selamat bertumbuh jadi versi yang lebih baik setiap harinya, sayangku, cintaku. panjang umur dan sehat selalu ya sayangg, biar kita bisa bareng terus🥹💗 harapan akuu dihari ulang tahun sayangg, apapun yang sayang minta, cari, dan harapkan, semoga satu persatu terwujud, hari ini dan seterusnya 🤍 semoga tuhan mengabulkan hal-hal baik yang benar-benar diinginkan hati sayangg. happy birthday Sayangg💐 aku akan selalu ada buat sayang, disetiap proses, disetiap hari, aku selalu sama sayangg 💗💗";
 
         // DAFTAR UCAPAN (WISHES)  
-        const wishes = [["HAPPY BIRTHDAY","MEILIYANI🤍"],["I LOVE YOU","SO MUCH"],["SEHAT","SELALU"],["PANJANG","UMUR"],["WISH YOU","ALL THE BEST"], ["MAKIN","SUKSES"],["LOVE YOU","ALWAYS"],["BAHAGIA","TERUS"]]; 
-        let wishIndex = 0;
+        const wishes = [["HAPPY BIRTHDAY","SAYANGG🤍"],["I LOVE YOU","SO MUCH"],["SEHAT","SELALU"],["PANJANG","UMUR"],["WISH YOU","ALL THE BEST"], ["MAKIN","SUKSES"],["LOVE YOU","ALWAYS"],["BAHAGIA","TERUS"]]; 
+        let wishIndex = 0; 
   
         function resize() {
             width = canvas.width = window.innerWidth;
@@ -413,8 +413,8 @@
                     for (let i = 0; i < 280; i++) {
                         particles.push(new SharpParticle(this.x, this.y, `#9f3a33`, true));
                     }
-                    // Mengubah kata yang meledak menjadi MEILIYANI
-                    setTimeout(() => createTextParticles(["MEILIYANI","🤍"], this.x, this.y, "#ffffff"), 1);
+                    // Mengubah kata yang meledak menjadi 
+                    setTimeout(() => createTextParticles(["Happy Birthday","Sayangg🤍"], this.x, this.y, "#ffffff"), 1);
                     cinematicDone = true;
                     setTimeout(() => { nextPageBtn.style.display = 'block'; }, 5000);   
                 } else {
