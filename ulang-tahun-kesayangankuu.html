@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Mengubah title web sesuai permintaan -->
     <title>Ulang Tahun Kesayangankuu</title>
-    <!-- Menambahkan link font Quicksand agar terbaca di canvas -->
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap" rel="stylesheet">
     
     <style>
@@ -16,11 +14,9 @@
             overflow: hidden;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: white;
-            /* Menghindari zoom otomatis saat klik cepat di iOS */
             touch-action: manipulation;
         }
 
-        /* Canvas sebagai background tetap */
         #canvas {
             position: fixed;
             top: 0;
@@ -31,7 +27,6 @@
             display: none;
         }
 
-        /* Overlay halaman */
         .page {
             position: fixed;
             top: 0;
@@ -46,16 +41,15 @@
             transition: opacity 0.5s ease-in-out, visibility 0.5s;
         }
 
-        /* Khusus halaman 3 agar bisa di-scroll */
         #page-3 {
-            position: absolute; /* Ganti fixed ke absolute agar bisa scroll */
+            position: absolute;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start; /* Mulai dari atas */
+            justify-content: flex-start;
             align-items: center;
             padding-bottom: 50px;
-            overflow-y: auto; /* Aktifkan scroll vertikal */
+            overflow-y: auto;
             background: rgba(0, 0, 0, 0.7);
         }
 
@@ -65,7 +59,6 @@
             pointer-events: none;
         }
 
-        /* Halaman 1: Kado */
         #page-1 {
             background: radial-gradient(circle, #1a1a1a 0%, #000 100%);
             z-index: 100;
@@ -100,10 +93,8 @@
             50% { transform: rotate(5deg) translateY(-20px); }
         }
 
-        /* Halaman 2: Kembang Api Overlay */
         #page-2 {
             pointer-events: auto;
-            /* Pastikan z-index cukup tinggi dan background transparan agar klik tembus */
             background: transparent;
         }
 
@@ -131,11 +122,10 @@
             box-shadow: 0 0 20px white;
         }
 
-        /* --- KEMBALI KE STYLE GALERI FOTO --- */
         .photo-gallery {
             position: relative;
             width: 100%;
-            height: 600px; /* Area khusus foto */
+            height: 600px;
             flex-shrink: 0;
         }
 
@@ -159,15 +149,13 @@
             z-index: 50;
         }
 
-        /* Style untuk Foto DAN Video di dalam frame */
         .photo-item img, .photo-item video {
             width: 100%;
-            height: 180px; /* Tinggi disamakan agar rapi */
+            height: 180px;
             object-fit: cover;
             display: block;
         }
 
-        /* POSISI FOTO/VIDEO YANG TERSEBAR */
         .photo-1.reveal { top: 5%; left: 5%; transform: rotate(-10deg); }
         .photo-2.reveal { top: 8%; right: 5%; transform: rotate(8deg); }
         .photo-3.reveal { top: 35%; left: 8%; transform: rotate(5deg); }
@@ -177,7 +165,6 @@
         @media (max-width: 768px) {
             .photo-gallery { height: 500px; }
             .photo-item { width: 130px; }
-            /* Penyesuaian mobile */
             .photo-item img, .photo-item video { height: 130px; }
             
             .photo-1.reveal { top: 5%; left: 5%; }
@@ -186,7 +173,6 @@
             .photo-4.reveal { top: 35%; right: 5%; }
             .photo-5.reveal { top: 65%; left: 35%; transform: rotate(5deg); }
         }
-        /* --------------------------- */
 
         .message-card {
             position: relative;
@@ -220,7 +206,6 @@
         .message-card p { font-size: 1.05rem; line-height: 1.6; color: #fff; }
         .restart-btn { margin-top: 25px; background: transparent; color: rgba(255,255,255,0.6); border: none; text-decoration: underline; cursor: pointer; }
 
-        /* Gaya untuk efek kursor mengetik */
         #typing-text::after {
             content: '|';
             animation: blink 0.7s infinite;
@@ -232,7 +217,6 @@
             50% { opacity: 0; }
         }
 
-        /* Hint Scroll untuk HP */
         .scroll-hint {
             color: rgba(255,255,255,0.5);
             font-size: 14px;
@@ -249,7 +233,6 @@
     </style>
 </head>
 <body>
-    <!-- AUDIO BACKGROUND -->
     <audio id="birthday-music" loop preload="auto">
         <source src="https://birthdaysx.github.io/Musik/athousand-years.mp3" type="audio/mpeg">
     </audio>
@@ -258,7 +241,7 @@
  
     <!-- HALAMAN 1 -->
     <div id="page-1" class="page">
-        <!-- Mengubah nama menjadi 
+        <!-- Komentar yang salah sudah diperbaiki disini -->
         <h1>Happy Birthday <br>Sayang🤍</h1>
         <button id="gift-button" aria-label="Buka Kado">🎁</button>
         <p style="color: #888; margin-top: 30px; letter-spacing: 1px;">Klik kado untuk kejutan</p>
@@ -287,7 +270,6 @@
  
         <!-- KARTU PESAN -->
         <div class="message-card" id="message-card">
-            <!-- Mengubah nama menjadi -->
             <h2>Happy Birthday<br>Sayangg🤍</h2> 
             <p id="typing-text"></p>
             <p style="font-style: italic; margin-top: 15px;">From Your Boyfriend</p>
@@ -313,10 +295,8 @@
         let isStarted = false;
         let cinematicDone = false; 
  
-        // PESAN UNTUK DIKETIK (Disisipkan nama 
         const messageToType = "Tepat hari ini 16 Mei 2026, it’s your special day sayangg\n"+"wish u all the best bubbiee🤍 maacii sayang udaa lahir kedunia ini dan jadi pasanganku. selamat bertumbuh jadi versi yang lebih baik setiap harinya, sayangku, cintaku. panjang umur dan sehat selalu ya sayangg, biar kita bisa bareng terus🥹💗 harapan akuu dihari ulang tahun sayangg, apapun yang sayang minta, cari, dan harapkan, semoga satu persatu terwujud, hari ini dan seterusnya 🤍 semoga tuhan mengabulkan hal-hal baik yang benar-benar diinginkan hati sayangg. happy birthday Sayangg💐 aku akan selalu ada buat sayang, disetiap proses, disetiap hari, aku selalu sama sayangg 💗💗";
 
-        // DAFTAR UCAPAN (WISHES)  
         const wishes = [["HAPPY BIRTHDAY","SAYANGG🤍"],["I LOVE YOU","SO MUCH"],["SEHAT","SELALU"],["PANJANG","UMUR"],["WISH YOU","ALL THE BEST"], ["MAKIN","SUKSES"],["LOVE YOU","ALWAYS"],["BAHAGIA","TERUS"]]; 
         let wishIndex = 0; 
   
@@ -413,7 +393,6 @@
                     for (let i = 0; i < 280; i++) {
                         particles.push(new SharpParticle(this.x, this.y, `#9f3a33`, true));
                     }
-                    // Mengubah kata yang meledak menjadi 
                     setTimeout(() => createTextParticles(["Happy Birthday","Sayangg🤍"], this.x, this.y, "#ffffff"), 1);
                     cinematicDone = true;
                     setTimeout(() => { nextPageBtn.style.display = 'block'; }, 5000);   
@@ -516,18 +495,15 @@
             }
         }, { passive: true });
 
-        // LOGIKA PINDAH HALAMAN
         nextPageBtn.onclick = (e) => {
             e.stopPropagation(); 
             page2.classList.add('hidden');
             page3.classList.remove('hidden');
-            document.body.style.overflowY = "auto";
+            document.body.style.overflowY = "auto"; 
             
-            // Memastikan video berputar saat halaman muncul
             const myVideo = document.querySelector('video');
             if(myVideo) myVideo.play().catch(error => console.log("Video autoplay error:", error));
 
-            // Animasi muncul Foto & Video satu per satu
             photoItems.forEach((item, i) => {
                 setTimeout(() => item.classList.add('reveal'), i * 300);
             });
