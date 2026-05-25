@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>byyy25</title>  
-    <!-- Font -->
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -17,7 +16,6 @@
             touch-action: manipulation;
         }
 
-        /* --- CANVAS LAYERING --- */
         #canvas-fireworks, #canvas-matrix {
             position: fixed;
             top: 0;
@@ -34,11 +32,10 @@
 
         #canvas-matrix {
             z-index: 2;
-            opacity: 0; /* Disembunyikan awalnya */
-            pointer-events: none; /* Agar tidak menghalangi klik di awal */
+            opacity: 0;
+            pointer-events: none;
         }
 
-        /* --- PAGES LAYERING --- */
         .page {
             position: fixed;
             top: 0;
@@ -72,7 +69,6 @@
             pointer-events: none;
         }
 
-        /* --- PAGE 1: KADO --- */
         #page-1 {
             background: radial-gradient(circle, #1a1a1a 0%, #000 100%);
             z-index: 100;
@@ -87,7 +83,6 @@
 
         @keyframes pulse {
             from { transform: scale(1); text-shadow: 0 0 10px #fff; }
-            /* UBAH: Warna shadow jadi Ungu */
             to { transform: scale(1.05); text-shadow: 0 0 30px #7ddaff; }
         }
 
@@ -99,7 +94,7 @@
             user-select: none;
             animation: wobble 2s infinite ease-in-out;
             transition: transform 0.3s;
-            filter: drop-shadow(0 0 20px rgba(125, 203, 255, 0.4)); /* UBAH: Shadow Ungu */
+            filter: drop-shadow(0 0 20px rgba(125, 203, 255, 0.4));
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -108,7 +103,6 @@
             50% { transform: rotate(5deg) translateY(-20px); }
         }
 
-        /* --- PAGE 2: FIREWORKS OVERLAY --- */
         #page-2 {
             pointer-events: auto;
             background: transparent;
@@ -122,7 +116,7 @@
             font-size: 14px; 
             animation: pulse 1s infinite alternate; 
             pointer-events: none;
-            opacity: 0; /* Awalnya 0, muncul via JS setelah ledakan */
+            opacity: 0;
             transition: opacity 1s ease-in;
             text-align: center;
             width: 100%;
@@ -152,15 +146,13 @@
             box-shadow: 0 0 20px white;
         }
 
-        /* --- PAGE 3: FOTO & PESAN --- */
         .photo-gallery {
             position: relative;
             width: 100%;
-            /* Max width agar di laptop tidak terlalu menyebar */
             max-width: 900px; 
             height: 600px;
             flex-shrink: 0;
-            margin: 0 auto; /* Tengah secara horizontal */
+            margin: 0 auto;
         }
 
         .photo-item {
@@ -173,7 +165,7 @@
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), z-index 0.1s, opacity 0.5s, top 0.5s;
             z-index: 11;
             opacity: 0;
-            top: 120%; /* Posisi awal di bawah layar */
+            top: 120%;
         }
 
         .photo-item.reveal { opacity: 1; }
@@ -183,7 +175,6 @@
             z-index: 50;
         }
 
-        /* Tambahkan rule khusus untuk foto ke-5 agar tetap di tengah saat di-hover */
         .photo-5:hover {
             transform: translateX(-50%) scale(1.1) rotate(0deg) !important;
         }
@@ -195,40 +186,26 @@
             display: block;
         }
 
-        /* --- POSISI FOTO YANG LEBIH RAPIH & TENGAH (DESKTOP) --- */
-        /* Foto 1 (Kiri Atas - Agak Masuk) */
         .photo-1.reveal { top: 10%; left: 15%; transform: rotate(-12deg); }
-        
-        /* Foto 2 (Kanan Atas - Agak Masuk) */
         .photo-2.reveal { top: 5%; right: 15%; transform: rotate(8deg); }
-        
-        /* Foto 3 (Kiri Tengah - Agak Masuk) */
         .photo-3.reveal { top: 40%; left: 20%; transform: rotate(5deg); }
-        
-        /* Foto 4 (Kanan Tengah - Agak Masuk) */
         .photo-4.reveal { top: 35%; right: 20%; transform: rotate(-8deg); }
-        
-        /* Foto 5 (Tengah Bawah - Benar-benar di tengah) */
         .photo-5.reveal { 
             top: 60%; 
             left: 50%; 
-            /* TranslateX -50% memastikan titik tengah foto ada di garis tengah layar */
             transform: translateX(-50%) rotate(2deg); 
         }
 
-        /* --- RESPONSIF UNTUK HP (MOBILE) --- */
         @media (max-width: 768px) {
             .photo-gallery { height: 500px; }
             .photo-item { width: 130px; }
             .photo-item img { height: 130px; }
             
-            /* Posisi Mobile yang lebih rapih */
             .photo-1.reveal { top: 5%; left: 8%; transform: rotate(-10deg); }
             .photo-2.reveal { top: 8%; right: 8%; transform: rotate(8deg); }
             .photo-3.reveal { top: 35%; left: 5%; transform: rotate(5deg); }
             .photo-4.reveal { top: 38%; right: 5%; transform: rotate(-10deg); }
             
-            /* Foto 5 di HP tetap di tengah */
             .photo-5.reveal { 
                 top: 65%; 
                 left: 50%; 
@@ -261,11 +238,9 @@
             transform: scale(1) translateY(0);
         }
 
-        /* UBAH: Warna Judul Pesan jadi Ungu */
         .message-card h2 { color: #7dbaff; margin-bottom: 15px; font-size: 1.8rem; }
         .message-card p { font-size: 1.05rem; line-height: 1.6; color: #fff; }
         
-        /* UBAH: Warna Tombol Transisi jadi Ungu */
         .transition-btn { 
             margin-top: 25px; 
             padding: 10px 20px;
@@ -277,7 +252,7 @@
             font-weight: bold;
             box-shadow: 0 0 15px rgba(125, 214, 255, 0.5);
             transition: all 0.3s;
-            opacity: 0; /* Muncul setelah teks selesai */
+            opacity: 0;
         }
         .transition-btn:hover {
             background: white;
@@ -285,7 +260,6 @@
             box-shadow: 0 0 20px white;
         }
 
-        /* UBAH: Warna Kursor Ketik jadi Ungu */
         #typing-text::after {
             content: '|';
             animation: blink 0.7s infinite;
@@ -310,7 +284,6 @@
             60% {transform: translateY(-5px);}
         }
 
-        /* Credit style (muncul di akhir matrix) */
         #credit-text {
             position: fixed;
             bottom: 20px;
@@ -322,10 +295,9 @@
             pointer-events: none;
         }
 
-        /* --- LINK GAMBAR AKHIR --- */
         #final-link {
             position: fixed;
-            bottom: 10%; /* Jarak dari bawah layar */
+            bottom: 10%;
             left: 50%;
             transform: translateX(-50%);
             z-index: 100;
@@ -341,8 +313,8 @@
             width: 120px;
             height: 120px;
             object-fit: cover;
-            border-radius: 50%; /* Membuat gambar jadi bundar */
-            border: 3px solid #7dd6ff; /* UBAH: Warna border Ungu */
+            border-radius: 50%;
+            border: 3px solid #7dd6ff;
             box-shadow: 0 0 20px rgba(125, 214, 255, 0.6);
             transition: transform 0.3s;
         }
@@ -355,7 +327,7 @@
             font-size: 15px;
             line-height: 1.4;
             margin-top: 15px;
-            text-shadow: 0 0 5px #7dc0ff; /* UBAH: Text shadow Ungu */
+            text-shadow: 0 0 5px #7dc0ff;
             animation: pulse 1s infinite alternate;
         }
         #final-link.show {
@@ -365,25 +337,19 @@
     </style>
 </head>
 <body>
-    <!-- LAGU (Pastikan file mp3 diupload atau sesuaikan link berikut) -->
     <audio id="birthday-music" loop preload="auto">
         <source src="https://birthdaysx.github.io/Musik/blue.mp3" type="audio/mpeg"> 
     </audio>
 
-    <!-- Canvas 1: Kembang Api -->
     <canvas id="canvas-fireworks"></canvas>
-    
-    <!-- Canvas 2: Efek Matrix (Kejutan Akhir) --> 
     <canvas id="canvas-matrix"></canvas>
  
-    <!-- HALAMAN 1 -->
     <div id="page-1" class="page">
         <h1>Happy Birthday!</h1>
         <button id="gift-button" aria-label="Buka Kado">🎁</button>
         <p style="color: #888; margin-top: 30px; letter-spacing: 1px;">Klik kado untuk kejutan</p>
     </div>
 
-    <!-- HALAMAN 2 -->
     <div id="page-2" class="page hidden">
         <div id="wishes-hint-text">
             ✨ Tap-tap layar untuk wishes ✨ 
@@ -391,7 +357,6 @@
         <button id="next-page-btn">Lihat Pesan Spesial ✨</button> 
     </div>
 
-    <!-- HALAMAN 3 -->
     <div id="page-3" class="page hidden">
         <div class="photo-gallery">
             <div class="photo-item photo-1"><img src="link-foto1" alt="Momen 1"></div>
@@ -407,23 +372,18 @@
             <h2>Happy Birthday<br>Jihan Camila A 💖</h2>  
             <p id="typing-text"></p> 
             <p style="font-style: italic; margin-top: 15px;">from Orang Ngeselin + Ngangenin</p> 
-            <!-- Tombol Transisi ke Matrix -->
             <button class="transition-btn" id="to-matrix-btn">Ada satu kejutan lagi...</button>
         </div>
     </div>
  
     <div id="credit-text">🩵</div>
  
-    <!-- ELEMEN GAMBAR LINK (MUNCUL DI AKHIR MATRIX) -->
     <a id="final-link" href="#" target="_blank" title="Klik untuk menuju link">
         <img src="link-foto6" alt="Klik Gambar Ini">
         <p>Klik Gambar</p>   
     </a> 
 
     <script>
-        /* =========================================
-           SETUP GLOBAL & CANVAS
-           ========================================= */
         const canvasFw = document.getElementById('canvas-fireworks');
         const ctxFw = canvasFw.getContext('2d');
         
@@ -432,7 +392,6 @@
 
         let width, height;
 
-        // Kontrol Status Main Loop & Matrix State 
         let runFireworks = false;
         let runMatrix = false;
         let m_state = "SWEEP"; 
@@ -445,7 +404,6 @@
             canvasM.width = width;
             canvasM.height = height;
             
-            // Re-init variables untuk matrix kalau diresize
             if(runMatrix && m_state !== "SWEEP" && typeof initMatrixCanvas === 'function') {
                 initMatrixCanvas();
             }
@@ -455,16 +413,12 @@
 
         const random = (min, max) => Math.random() * (max - min) + min;
 
-        /* =========================================
-           BAGIAN 1: LOGIKA KEMBANG API (FIREWORKS)
-           ========================================= */
         let fw_particles = [];
         let fw_lasers = [];
         let fw_cinematicDone = false;
   
         const messageToType = "Happy birthday yaa byyy 🥳🎂💖\n\nHari ini manusia paling cantik, paling lucu, paling bawel, paling ngambekan, tapi paling aku sayang lagi ulang tahun nih 😤🤏🏻❤️\n\nSemoga di umur yang sekarang semua keinginan kamu pelan-pelan tercapai yaa. Semoga selalu sehat, selalu bahagia, rezekinya lancar, makin cantik tiap hari, dan semoga kesabarannya menghadapi aku juga ikut bertambah 😔🙏🏻 wkwkwk\n\nMakasih ya by udah mau bertahan sama manusia random kayak aku. Aku tau aku tuh suka bikin kesel… kadang nyebelin, kadang bikin emosi, kadang bikin ngambek, kadang juga bikin kamu pengen nyemplungin aku ke laut mungkin 😭\n\nTapi walaupun aku suka ngeselin, percayalah cintaku bukan main-main by 😔☝🏻\n\nAku sayang banget sama kamu. Banget banget. Bahkan kalau disuruh milih antara kamu atau tidur… aku bakal bingung dulu sih… tapi ujungnya tetep milih kamu kok 😭❤️\n\nPokoknya aku cuma pengen kamu bahagia terus. Jangan terlalu sering sedih yaa. Kalau ada yang bikin kamu sedih bilang aja, nanti kita marahin bareng 😤\n\nDan maafin aku juga ya by kalau selama ini aku sering bikin kamu kesel mulu hehehe. Aku emang kadang nyebelin, tapi nyebelinnya khusus buat orang yang aku sayang aja 😌💖\n\nSekali lagi happy birthday babyyy 🎂🤍\n\nSemoga tahun ini lebih banyak ketawa daripada nangis, lebih banyak bahagia daripada capeknya, dan semoga hubungan kita juga tetep awet yaa 🥺✨\n\nLove uuu more than mie ayam + es teh 😔❤️";
         
-        // BAGIAN YANG DIGANTI
         const wishes = [
             ["Selamat ulang","tahun byy ❤️"],
             ["Sehat terus", "yaa, by"],
@@ -567,7 +521,6 @@
                     setTimeout(() => createTextParticles(["JIHAN CAMILA", "A 💖"], this.x, this.y, "#ffffff"), 1);
                     fw_cinematicDone = true;
                     
-                    // Teks Wishes muncul SETELAH ledakan utama  
                     setTimeout(() => {
                         document.getElementById('wishes-hint-text').style.opacity = '1';
                     }, 1000);
@@ -633,9 +586,6 @@
             requestAnimationFrame(animateFireworks);
         }
 
-        /* =========================================
-           BAGIAN 2: LOGIKA MATRIX & HEART (KEJUTAN)
-           ========================================= */
         let m_particles = [];
         let m_rippleParticles = []; 
         let m_drops = []; 
@@ -794,7 +744,6 @@
             tempCanvas.width = width;
             tempCanvas.height = height;
             
-            // Adjust text size dynamically based on length to prevent clipping on mobile
             let tSize = Math.min(width / (Math.max(text.length, 5) * 0.55), 150);
 
             tempCtx.font = `bold ${tSize}px Arial`;
@@ -865,9 +814,8 @@
             m_isExploding = false;
             
             m_state = "FINAL_HEART"; 
-            document.getElementById('credit-text').style.display = 'block'; // Tampilkan credit
+            document.getElementById('credit-text').style.display = 'block';
 
-            // TAMPILKAN GAMBAR LINK SETELAH 1.5 DETIK
             setTimeout(() => {
                 document.getElementById('final-link').classList.add('show');
             }, 1500); 
@@ -951,11 +899,6 @@
             requestAnimationFrame(animateMatrix);
         }
 
-        /* =========================================
-           BAGIAN 3: ALUR INTERAKSI & TRANSISI
-           ========================================= */
-
-        // Fungsi Animasi Mengetik
         function typeWriter(text, elementId, speed, callback) {
             let i = 0;
             const element = document.getElementById(elementId);
@@ -973,14 +916,12 @@
             type();
         }
 
-        // TAHAP 1: BUKA KADO
         document.getElementById('gift-button').addEventListener('click', () => {
             const music = document.getElementById('birthday-music');
-            music.play().catch(error => console.log("Musik diblokir browser:", error));
+            music.play().catch(error => console.log(error));
             
             document.getElementById('page-1').classList.add('hidden');
             
-            // Mulai Fireworks
             canvasFw.style.display = 'block';
             document.getElementById('page-2').classList.remove('hidden');
             
@@ -991,7 +932,6 @@
             }, 500);
         });
 
-        // Event Klik Layar untuk memunculkan harapan saat kembang api
         window.addEventListener('pointerdown', (e) => {
             if (runFireworks && fw_cinematicDone && e.target.id !== 'next-page-btn' && e.target.id !== 'to-matrix-btn') {
                 const text = wishes[wishIndex];
@@ -1001,27 +941,23 @@
             }
         }, { passive: true });
 
-        // TAHAP 2: PINDAH KE FOTO DAN PESAN
         document.getElementById('next-page-btn').onclick = (e) => {
             e.stopPropagation(); 
             document.getElementById('page-2').classList.add('hidden');
             document.getElementById('page-3').classList.remove('hidden');
             document.body.style.overflowY = "auto";
             
-            // Animasi foto muncul
             const photoItems = document.querySelectorAll('.photo-item');
             photoItems.forEach((item, i) => {
                 setTimeout(() => item.classList.add('reveal'), i * 300);
             });
 
-            // Animasi Kartu Pesan dan Ngetik
             setTimeout(() => {
                 document.getElementById('message-card').classList.add('reveal');
                 if(window.innerWidth < 768) document.getElementById('scroll-hint').style.display = 'block';
                 
                 setTimeout(() => {
                     typeWriter(messageToType, "typing-text", 50, () => {
-                        // Munculkan tombol ke matrix SETELAH teks selesai diketik
                         const toMatrixBtn = document.getElementById('to-matrix-btn');
                         toMatrixBtn.style.opacity = '1';
                     });
@@ -1029,34 +965,28 @@
             }, 1800);
         };
 
-        // TAHAP 3: TRANSISI KE MATRIX
         document.getElementById('to-matrix-btn').onclick = (e) => {
             e.stopPropagation();
             
-            // 1. Fade out halaman pesan dan foto
             document.getElementById('page-3').style.opacity = '0';
             
-            // 2. Fade out layer kembang api, Fade in layer matrix
             canvasFw.style.opacity = '0';
             canvasM.style.opacity = '1';
-            canvasM.style.pointerEvents = 'auto'; // Agar bisa diklik kalau perlu
+            canvasM.style.pointerEvents = 'auto';
             
-            // Mencegah scroll
             document.body.style.overflowY = "hidden";
 
             setTimeout(() => {
-                // Sembunyikan elemen lama sepenuhnya agar tidak membebani memori
                 document.getElementById('page-3').style.display = 'none';
-                runFireworks = false; // Matikan loop animasi kembang api
+                runFireworks = false;
                 canvasFw.style.display = 'none';
                 
-                // Mulai sequence Matrix
                 initMatrixCanvas();
                 runMatrix = true;
                 animateMatrix();
-            }, 1500); // Tunggu sampai transisi CSS (fade out) selesai
+            }, 1500);
         };
 
     </script>
 </body>
-</html>
+</html> 
