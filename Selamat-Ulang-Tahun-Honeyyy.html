@@ -246,9 +246,10 @@
 
     <!-- AUDIO BACKGROUND -->
     <audio id="birthday-music" loop preload="auto">  
-        <source src="https://birthdaysx.github.io/Musik/starla-reff.mp3" type="audio/mpeg"> 
+        <source src="https://birthdaysx.github.io/Musik/starla-refff.mp3" type="audio/mpeg"> 
     </audio>
-    <audio id="player-music" preload="none"></audio>  
+    <!-- AUDIO UNTUK SPOTIFY PLAYER (DIBUAT LOOP) -->
+    <audio id="player-music" loop preload="none"></audio>   
 
     <!-- GALAXY BACKGROUND -->
     <div id="main-bg"></div>
@@ -632,7 +633,7 @@
             <p id="second-letter-text" class="text-neutral-200 leading-relaxed max-h-[55vh] min-h-[150px] overflow-y-auto custom-scrollbar pr-3 text-sm md:text-base font-medium"></p>
             
             <div id="second-letter-footer" class="mt-6 text-right font-display italic text-spotify opacity-0 transition-opacity duration-1000">
-                - Yours
+                - Lasmanaa 
             </div>
         </div>
     </div>
@@ -973,7 +974,7 @@
                 this.x = width / 2; this.y = height;
                 this.targetX = targetX; this.targetY = targetY; this.isCinematic = isCinematic;
                 const angle = Math.atan2(targetY - this.y, targetX - this.x);
-                this.speed = isCinematic ? 0.01 : 2.5; this.acceleration = isCinematic ? 1.0245 : 1.1;     
+                this.speed = isCinematic ? 0.01 : 2.5; this.acceleration = isCinematic ? 1.026 : 1.1;       
                 this.velocityUnit = { x: Math.cos(angle), y: Math.sin(angle) };
                 this.hue = isCinematic ? 0 : random(0, 360);
                 this.color = isCinematic ? '#00529F' : `hsl(${this.hue}, 100%, 70%)`; 
