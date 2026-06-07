@@ -75,6 +75,13 @@
         }
         .page.active { opacity: 1; pointer-events: auto; }
 
+        /* FIXED: Mencegah pointer-events-auto lolos saat page tidak aktif */
+        .page:not(.active) .pointer-events-auto,
+        .page:not(.active) .polaroid,
+        .page:not(.active) .cursor-pointer {
+            pointer-events: none !important;
+        }
+
         /* === ANIMATIONS === */
         @keyframes heartbeat {
             0%, 28%, 70% { transform: scale(1); }
@@ -693,8 +700,18 @@
         // --- TRANSISI LANGSUNG DARI BUKU KE KEMBANG API ---
         function goToFireworks(event) {
             event.stopPropagation();
-            document.getElementById('page0').classList.remove('active');
+            const page0 = document.getElementById('page0');
+            page0.classList.remove('active');
+            
+            // Mencegah dan melucuti fungsi klik pada polaroid secara eksplisit sebelum transisi selesai
+            page0.querySelectorAll('.polaroid, .cursor-pointer').forEach(el => {
+                el.classList.remove('pointer-events-auto');
+                el.style.pointerEvents = 'none';
+            });
+
             setTimeout(() => {
+                page0.style.display = 'none'; // Sembunyikan total page0 dari layar agar tidak mengganggu klik
+                
                 goToPage(2);
                 document.getElementById('page2').style.pointerEvents = 'none'; 
                 fwCanvas.style.display = 'block';
@@ -1596,4 +1613,4 @@
         createShootingStar(); animate();
     </script>
 </body>
-</html>
+</html> 
