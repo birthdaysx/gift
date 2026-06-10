@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dtr putra</title>
+    <title>ini wishlist mu</title>
     <!-- Menambahkan link font Quicksand agar terbaca di canvas -->
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap" rel="stylesheet">
     
@@ -243,10 +243,10 @@
     </style>
 </head>
 <body>
-    <!-- AUDIO BACKGROUND: Silakan ganti link/url dengan file lagu Budi Doremi - 123456 yang Anda miliki -->
-    <!-- Contoh: <source src="https://domain-anda.com/budi-doremi-123456.mp3" type="audio/mpeg"> -->
-    <audio id="birthday-music" loop preload="auto">
-        <source src="https://birthdaysx.github.io/Musik/1234566.mp3" type="audio/mpeg">  
+    <!-- AUDIO BACKGROUND: Silakan ganti link/url dengan file lagu "Semoga ya" yang Anda miliki -->
+    <!-- Saat ini menggunakan musik default sebagai placeholder -->
+    <audio id="birthday-music" loop preload="auto"> 
+        <source src="https://birthdaysx.github.io/Musik/semoga-yaa.mp3" type="audio/mpeg">   
     </audio>
  
     <canvas id="canvas"></canvas>
@@ -267,23 +267,24 @@
     </div>
 
     <!-- HALAMAN 3 (GALERI FOTO & VIDEO) -->
+    <!-- Ganti link src gambar dengan 5 foto yang sudah dikirimkan -->
     <div id="page-3" class="page hidden">
         
         <div class="photo-gallery"> 
-            <div class="photo-item photo-1"><img src="https://birthdaysx.github.io/Foto5/ppp1.jpeg" alt="Momen 1"></div>
-            <div class="photo-item photo-2"><img src="https://birthdaysx.github.io/Foto5/ppp2.jpeg" alt="Momen 2"></div> 
-            <div class="photo-item photo-3"><img src="https://birthdaysx.github.io/Foto5/ppp3.jpeg" alt="Momen 3"></div>
-            <div class="photo-item photo-4"><img src="https://birthdaysx.github.io/Foto5/ppp4.jpeg" alt="Momen 4"></div> 
-            <div class="photo-item photo-5"><img src="https://birthdaysx.github.io/Foto5/ppp5.jpeg" alt="Momen 5"></div>
+            <div class="photo-item photo-1"><img src="https://birthdaysx.github.io/Musik/yyy1.jpeg" alt="Momen 1"></div>
+            <div class="photo-item photo-2"><img src="https://birthdaysx.github.io/Musik/yyy2.jpeg" alt="Momen 2"></div> 
+            <div class="photo-item photo-3"><img src="https://birthdaysx.github.io/Musik/yyy3.jpeg" alt="Momen 3"></div>
+            <div class="photo-item photo-4"><img src="https://birthdaysx.github.io/Musik/yyy4.jpeg" alt="Momen 4"></div>    
+            <div class="photo-item photo-5"><img src="https://birthdaysx.github.io/Musik/yyy5.jpeg" alt="Momen 5"></div>
         </div>
 
         <div id="scroll-hint" class="scroll-hint">Scroll kebawah yaaa.. 👇</div>   
  
         <!-- KARTU PESAN -->
         <div class="message-card" id="message-card"> 
-            <h2>Happy Birthday<br>Ribka Suka Matchaa</h2>
+            <h2>HEYY!!<br>happy B - day yaa!!</h2>
             <p id="typing-text"></p>
-            <p style="font-style: italic; margin-top: 15px;">Dari pertama Purba</p>
+            <p style="font-style: italic; margin-top: 15px;">Dari kodomo</p>
             <button class="restart-btn" onclick="location.reload()">Mulai Lagi</button>
         </div>
     </div>
@@ -307,10 +308,10 @@
         let cinematicDone = false; 
  
         // PESAN UNTUK DIKETIK
-        const messageToType = "Selamat ulang tahun, Sayang. Jarak hanyalah ujian seberapa jauh cinta kita bisa menjangkau. Semoga impianmu tercapai dan kita bisa segera merayakannya bersama.";
+        const messageToType = "hari ini hari kelahiran mu, selamat menuaaa nyett, doaa ku bahagia selalu yaa nyett, sehat sehat dan jaga kesehatan selalu, jangan mudah menyerah yaa, jadi lebih baik dimasa depan, semoga apa yang diinginkan segera tercapai, sukses selalu yaaa. semoga dilancarkan segala urusannya, apa yang dicita citakan segera tercapai. lupakan yang membuat mu sakit dan jadikan itu semangat untuk berjuang. semangat nyettt.";
 
-        // DAFTAR UCAPAN (WISHES) SAAT LAYAR DIKLIK (Nama diubah menjadi RIBKA)
-        const wishes = [["HAPPY BIRTHDAY","RIBKA"],["SEHAT","SELALU"],["BAHAGIA","TERUS"],["PANJANG","UMUR"],["WISH YOU","ALL THE BEST"], ["MAKIN","SUKSES"],["LOVE YOU","ALWAYS"]]; 
+        // DAFTAR UCAPAN (WISHES) SAAT LAYAR DIKLIK (Sudah disesuaikan)
+        const wishes = [["HAPPY","BIRTHDAY"],["MONYET","IMOET"],["SEHAT","SELALU"],["BAHAGIA","SELALU"],["SELAMAT MENUA","NYETT"],["SEMANGAT","TERUS"]];  
         let wishIndex = 0;
 
         function resize() {
@@ -408,7 +409,8 @@
                         // Warna ledakan partikel hijau tua agar kontras
                         particles.push(new SharpParticle(this.x, this.y, `#5a7233`, true));
                     }
-                    setTimeout(() => createTextParticles(["RIBKA SUKA","MATCHAA"], this.x, this.y, "#ffffff"), 1);
+                    // Mengubah teks ledakan kembang api utama
+                    setTimeout(() => createTextParticles(["MONYET IMOET","( UUT )"], this.x, this.y, "#ffffff"), 1);
                     cinematicDone = true;
                     setTimeout(() => { nextPageBtn.style.display = 'block'; }, 5000);     
                 } else {  
@@ -518,7 +520,7 @@
             document.body.style.overflowY = "auto";
             
             const myVideo = document.querySelector('video');
-            if(myVideo) myVideo.play().catch(error => console.log("Video autoplay error:", error));
+            if(myVideo) myVideo.play().catch(error => console.log("Video autoplay error:", error)); 
 
             photoItems.forEach((item, i) => {
                 setTimeout(() => item.classList.add('reveal'), i * 300);
@@ -535,4 +537,4 @@
         };
     </script>
 </body>
-</html>
+</html> 
