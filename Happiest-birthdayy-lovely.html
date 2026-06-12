@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Pacifico&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Sayang!</title>   
+    <style>
+        :root {  
+            /* Tema Biru Pastel */
+            --blue-soft: #b6d8ff;
+            --blue-bright: #c8e6ff;
+            --text-color: #444; 
+            --accent-blue: #7aaaff;  
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(to bottom, var(--blue-soft), var(--blue-bright));
+            overflow: hidden;
+            color: var(--text-color);
+        }
+
+        /* Hujan Emoticon */
+        .emoji-rain {
+            position: fixed;
+            top: -10%;
+            z-index: 0;
+            user-select: none;
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        /* Container Utama */
+        #content-container {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Kotak Konten (Glassmorphism Effect) */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 25px 20px;
+            box-shadow: 0 8px 32px 0 rgba(22, 22, 22, 0.15);
+            border: 2px solid rgba(122, 170, 255, 0.4);
+            max-width: 420px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        /* Custom Scrollbar untuk Glass Card jika kepanjangan */
+        .glass-card::-webkit-scrollbar {
+            width: 6px;
+        }
+        .glass-card::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+        }
+        .glass-card::-webkit-scrollbar-thumb {
+            background: var(--accent-blue);
+            border-radius: 10px;
+        }
+
+        .page {
+            display: none;
+            width: 100%;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Media */
+        .sticker-gif {
+            width: 140px;
+            height: auto; 
+            margin-bottom: 10px;
+        }
+
+        .photo-frame {
+            width: 180px;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 15px;
+            border: 5px solid white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 12px;
+        }
+
+        .photo-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .photo-small {
+            width: 110px;
+            height: 140px;
+            object-fit: cover;
+        }
+
+        /* Kalender Mini */
+        .calendar {
+            background: white;
+            border-radius: 15px;
+            padding: 10px 12px;
+            width: 230px;
+            margin: 10px auto;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            font-size: 0.75rem;
+        }
+        .calendar-header {
+            font-weight: bold;
+            color: var(--accent-blue);
+            margin-bottom: 5px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+            font-size: 0.85rem;
+        }
+        .calendar-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            font-weight: bold;
+            color: #888;
+            margin-bottom: 4px;
+            font-size: 0.65rem;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+        }
+        .day {
+            padding: 4px 0;
+            position: relative;
+            z-index: 1; 
+        }
+        .today-circle {
+            position: absolute;
+            top: 55%;   
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 26px; 
+            height: 26px; 
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%237aaaff'%3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            animation: circleScale 0.8s ease-out forwards; 
+            animation-delay: 0.8s;
+            opacity: 0;
+            z-index: -1; 
+        }  
+        @keyframes circleScale {
+            from { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+            to { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+        }
+
+        /* Tulisan */
+        h1 { font-size: 1.25rem; margin: 5px 0; color: #333; line-height: 1.4; }
+        h3 { font-size: 0.9rem; color: #444; line-height: 1.4; margin: 5px 0; font-weight: 600; }
+        p { font-size: 0.85rem; margin: 5px 0; line-height: 1.45; font-weight: 500; }
+        .quote-text {
+            font-style: italic;
+            color: #555;
+            font-size: 0.8rem;
+            background: rgba(255, 255, 255, 0.4);
+            padding: 8px;
+            border-radius: 10px;
+            margin: 8px 0;
+            border-left: 3px solid var(--accent-blue);
+            text-align: left;
+        }
+        
+        /* Tombol & Layout Tombol */
+        button { 
+            background-color: var(--accent-blue);
+            border: none;
+            padding: 10px 24px;
+            border-radius: 25px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(122, 170, 255, 0.3);
+            transition: 0.3s;
+            width: 100%;
+            max-width: 220px;
+            font-size: 0.85rem;
+        }
+        button:hover { transform: scale(1.03); background-color: #92bbff; }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        /* Style Khusus Tombol Kembali */
+        .back-btn {
+            background-color: rgba(255, 255, 255, 0.6);
+            color: #666;
+            border: 1px solid rgba(122, 170, 255, 0.5);
+            box-shadow: none;
+            padding: 6px 16px; 
+            font-size: 0.75rem;
+            width: auto; 
+            min-width: 100px;
+        }
+        .back-btn:hover {
+            background-color: rgba(122, 170, 255, 0.1);
+        }
+
+        /* Layout untuk tombol next tunggal */
+        .single-btn { margin-top: 15px; }
+
+        /* Watermark */
+        #watermark {
+            position: fixed;
+            bottom: 10px;
+            right: 15px;
+            font-size: 0.65rem;
+            color: rgba(0, 0, 0, 0.3);
+            animation: blink 3s infinite;
+            z-index: 100;
+            text-align: right;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Typewriter Page */
+        #typewriter {
+            font-size: 0.82rem;
+            white-space: pre-wrap;
+            text-align: left;
+            max-width: 100%;
+            height: 260px;
+            overflow-y: auto;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 15px;
+            margin-top: 10px;
+            line-height: 1.5;
+            border: 1px solid rgba(122, 170, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop>
+        <source src="https://birthdaysx.github.io/Musik/about-you-fulll.mp3" type="audio/mpeg"> 
+    </audio> 
+
+    <div style="font-family: 'Lucida Calligraphy', cursive;" id="watermark">from ur beloved <3</div>
+
+    <div id="content-container"> 
+        <div class="glass-card"> 
+             
+            <!-- PAGE 1 (TETAP SAMA) -->
+            <div class="page active" id="p1"> 
+                <img src="https://media.tenor.com/6yBqtjeP1ekAAAAi/bubu-dudu-sseeyall.gif" class="sticker-gif">
+                <h1>HAPPY BIRTHDAYY <br> GANTENGKUU SAYANGKUU <br> ૮₍ ˶ᵔ ᵕ ᵔ˶ ₎ა </h1> 
+                <p>there's more waiting... click to find out ✨</p> 
+                <button class="single-btn" onclick="nextPage(1)">tap <3</button> 
+            </div>
+
+            <!-- PAGE 2 (Juni 2004 - Kalender Akurat) -->
+            <div class="page" id="p2"> 
+                <div class="calendar"> 
+                    <div class="calendar-header" id="monthLabel">Juni 2004</div>
+                    <div class="calendar-weekdays">
+                        <div>Min</div><div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div>
+                    </div>
+                    <div class="calendar-grid" id="calendarGrid">
+                        <!-- Grid generated by JS -->
+                    </div>
+                </div> 
+                <p>I'm so grateful to have met such an amazing person like you, and that you mean so much to me. I hope you know that I'm so happy to have you and I hope I never lose you. Please don't be too hard on yourself because you are more than enough. 🥳🎉🎂</p>
+                <div class="btn-group">
+                    <button onclick="nextPage(2)">next page <3</button>
+                    <button onclick="prevPage(2)" class="back-btn">Kembali</button>
+                </div> 
+            </div>
+
+            <!-- PAGE 3 -->
+            <div class="page" id="p3"> 
+                <img src="https://media.tenor.com/Pnxv-9Bp0DUAAAAi/tkthao219-bubududu.gif" class="sticker-gif">
+                <p style="font-size: 0.9rem;">Happy birthday ya sayangkuu cinta, semoga disela sela keraguanku kamu selalu meyakinkan aku bukan malah ikut ragu 🫶🏻🎁</p>
+                <div class="btn-group">
+                    <button onclick="nextPage(3)"><3</button>  
+                    <button onclick="prevPage(3)" class="back-btn">Kembali</button>
+                </div>
+            </div>
+
+            <!-- PAGE 4 -->
+            <div class="page" id="p4">
+                <img src="https://media.tenor.com/vroVodINV0EAAAAi/tkthao219-bubududu.gif" class="sticker-gif">
+                <p style="font-size: 0.82rem; text-align: justify; padding: 0 5px;">Semoga kita tetap bareng terus yaa, jangan tinggalin aku dan jangan bosen sama aku, makasih udah jadi cowo yang selalu bikin aku nyaman, bikin aku ngerasa dicintai, dan selalu ada walaupun kadang keadaan lagi ga gampang. 🥰🫰</p> 
+                <div class="quote-text">
+                    Aku memilihmu sebagai pasanganku bukan karena tidak ada lelaki yg mau denganku. tapi, kamulah yang jadi pilihanku disaat banyaknya lelaki yang ingin memilikiku...
+                </div>
+                <div class="btn-group">
+                    <button onclick="nextPage(4)">next <3</button> 
+                    <button onclick="prevPage(4)" class="back-btn">Kembali</button>
+                </div>
+            </div>
+
+            <!-- PAGE 5 -->
+            <div class="page" id="p5">
+                <img src="https://media.tenor.com/fFpVFqD_4esAAAAi/peluk.gif" class="photo-frame"> 
+                <h3 style="font-size: 0.85rem; color: var(--accent-blue);">Happiest birthdayy lovely! 💗🫶🏻</h3>
+                <p style="font-size: 0.8rem; text-align: center; padding: 0 5px;">I hope all your birthday wishes and dreams come true, happiness, and love you deserve. I'm forever thankful and grateful for your back to me. I love you infinitely! 🥹🫂❤️‍🩹</p>
+                <div class="btn-group">
+                    <button onclick="nextPage(5)">read more (♡ ᵔ ᵕ ᵔ ♡)</button> 
+                    <button onclick="prevPage(5)" class="back-btn">Kembali</button>
+                </div>
+            </div>
+
+            <!-- PAGE 6 -->
+            <div class="page" id="p6">
+                <div class="photo-group">
+                    <img src="https://media.tenor.com/W8YgPGos_RMAAAAi/kiss.gif" class="photo-frame photo-small"> 
+                    <img src="https://media.tenor.com/Zrr4L_Wd4JkAAAAi/bubu-rub-bubu-love-dudu.gif" class="photo-frame photo-small"> 
+                </div>
+                <p style="font-size: 0.8rem; text-align: justify; line-height: 1.4;">
+                    Semoga ditahun ini kamu tambah sabar dalam menghadapi sikapku yang terkadang kecintaan dan terkadang tidak sama sekali. Tentang mencintai kamu, aku tidak pernah berbohong. Tak ada yang kulebihkan, tak ada yang kusembunyikan semuanya tumbuh apa adanya... 💖
+                </p>
+                <div class="quote-text" style="font-size: 0.75rem; margin: 4px 0;">
+                    Jika suatu hari kau ragu, ingat saja satu hal: aku mungkin salah dalam banyak hal, tapi tidak dalam mencintaimu.
+                </div>
+                <div class="btn-group"> 
+                    <button onclick="nextPage(6)">for you ♡</button>  
+                    <button onclick="prevPage(6)" class="back-btn">Kembali</button> 
+                </div>
+            </div>
+
+            <!-- PAGE 7 -->
+            <div class="page" id="p7">  
+                <img src="https://media.tenor.com/BDP5eJeyZPQAAAAi/tkthao219-bubududu.gif" class="photo-frame"> 
+                <p style="font-size: 0.82rem; text-align: center;">
+                    Makasih yaa udah berusaha menjadi yang terbaik buat aku, meski terkadang aku kurang baik dalam memahami bahasa cintamu dan membuat dirimu mengira bahwa aku tidak menginginkanmu dan juga tidak menghargaimu 🤧😔
+                </p>
+                <p style="color: var(--accent-blue); font-weight: bold; margin-top: 5px;">If you need someone, I'm here. Inget itu yaa!!! ✨</p> 
+                <div class="btn-group"> 
+                    <button onclick="nextPage(7)">buka surat kecil ♡</button>  
+                    <button onclick="prevPage(7)" class="back-btn">Kembali</button>
+                </div>
+            </div> 
+ 
+            <!-- PAGE 8 (TYPEWRITER - CURAHAN HATI PANJANG) -->
+            <div class="page" id="p8">
+                <img src="https://media.tenor.com/AZ12YafzVwwAAAAi/bubu-dudu-prince-bubu-dudu-princess.gif" class="sticker-gif"> 
+                <h1 style="font-size: 1.1rem; margin-bottom: 2px;">HAPPYY BIRTHDAYY<br>GANTENGKU SAYANGG<br>૮₍´˶> . < ⑅ ₎ა</h1> 
+                <div id="typewriter"></div>   
+                
+                <div class="btn-group" id="p8-buttons" style="display: none; animation: fadeIn 1s;">
+                    <button id="waButton" onclick="balasWA()">Balas pesan ini 🥰</button>
+                    <button onclick="prevPage(8)" class="back-btn">Kembali</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Konfigurasi Emoticon
+        const emojis = ['💖', '🧸', '🎀', '🌸', '✨'];
+        
+        function createEmoji() {
+            const e = document.createElement('div');
+            e.className = 'emoji-rain';
+            e.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+            e.style.left = Math.random() * 100 + 'vw';
+            e.style.animationDuration = Math.random() * 3 + 2 + 's';
+            e.style.fontSize = Math.random() * 20 + 10 + 'px';
+            document.body.appendChild(e);
+            setTimeout(() => e.remove(), 5000);
+        }
+        setInterval(createEmoji, 300);
+
+        // Generate Calendar Logic untuk Juni 2004 yang Akurat secara Historis
+        function generateCalendar() { 
+            const grid = document.getElementById('calendarGrid');  
+            const targetDay = 19; // 19 Juni 2004 (Hari Sabtu)
+            
+            // 1 Juni 2004 jatuh pada hari SELASA.
+            // Di grid kalender (Min, Sen, Sel, Rab, Kam, Jum, Sab), 
+            // kita membutuhkan 2 kolom kosong di awal (yaitu untuk Minggu dan Senin).
+            const startOffset = 2; 
+
+            // Tambahkan kolom kosong untuk hari sebelum tanggal 1
+            for(let i = 1; i <= startOffset; i++) {
+                const emptyDiv = document.createElement('div');
+                emptyDiv.className = 'day';
+                emptyDiv.style.opacity = '0';
+                grid.appendChild(emptyDiv);
+            }
+
+            // Generate tanggal 1 sampai 30 untuk bulan Juni
+            for(let i = 1; i <= 30; i++) { 
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'day';
+                dayDiv.innerText = i;
+                if(i === targetDay) {
+                    const circle = document.createElement('div');
+                    circle.className = 'today-circle';
+                    dayDiv.appendChild(circle);
+                    dayDiv.style.fontWeight = 'bold';
+                    dayDiv.style.color = 'white';
+                }
+                grid.appendChild(dayDiv);
+            }
+        }
+        generateCalendar();
+
+        // Navigasi Halaman Maju
+        function nextPage(current) {
+            if(current === 1) {
+                document.getElementById('bgMusic').play().catch(() => {});
+            }
+            if(current === 7) {
+                confetti({
+                    particleCount: 150,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#afc5ff', '#a0e4ff', '#6b9dff', '#ffffff']
+                });
+            }
+
+            document.getElementById('p' + current).classList.remove('active');
+            const next = current + 1;
+            document.getElementById('p' + next).classList.add('active');
+
+            if(next === 8) {
+                startTypewriter();
+            }
+        } 
+
+        // Navigasi Halaman Mundur (Kembali)
+        function prevPage(current) {
+            document.getElementById('p' + current).classList.remove('active');
+            const prev = current - 1;
+            document.getElementById('p' + prev).classList.add('active');
+        }
+ 
+        // Efek Mengetik dengan Konten Panjang
+        const text = `Selalu rendah hati yaa sayang, tetep jadi orang baik, jangan berubah, tetep jadi orang yang aku kenal yaa sayang, selalu sayang sama orangtua, jangan lupa untuk selalu bersyukur yaa, dan semoga apapun yang kamu lakukan hari ini dan hari berikutnya selalu diberi kelancaran serta keselamatan, aku selalu berdoa yang terbaik buat kamu. 
+
+Jangan pernah ngerasa insecure, kamu punya sisi lebih yang orang lain ga punya, semangat yaa menghadapi semua masalah, kamu hebat sayang, kamu bisa sampai dititik ini juga ga mudah, kamu kuat, aku bangga. 
+
+Sebenarnya pertengkaran kita kemarin aku sudah ingin melepaskanmu dan aku sdh berusaha akan hal itu dan melupakan segala cintaku kepadamu tapi tetap gak bisa, padahal aku sudah terbiasa tanpa adanya notif drimu tpi gatau kenapa jika notif tersebut tidak ada dalam keadaan kita sedang bertengkar semuanya terasa berbeda...
+
+Aku mau minta maaf sama kamu, dengan sifatku yang membuatmu terasa capek, kadang setiap sikapku kamu merasa ada yg tdk enak. Terimakasih telah membuat kuu nyamannn, terimakasihhh sudahhh datangggg dikehidupannn akuuu terimakasihhhh sudahhh membuattt akuuu percayaaa bahwaaa nggaaa semuaaa laki-laki itu samaaa ajaaaa.
+
+Inget itu yaa!
+Akuu harapp kitaa bisaa sama-sama terusss sampaiii takdirrr yangggg memisahkannn. Semogaaa akuuu adalahhh seseoranggg yanggg tidakkk akannn membuattt kamuuu mencariii oranggg lainnnn lagiiii.
+
+I'm so lucky to be yours, semoga aku bisa jadi only support system yang terbaik buat sayang hehehe panjang kali ya aku ngetiknya......
+
+Your happiness is mine too, akuu sayangggg bangettt samaaa kamuuuu. ❤️
+`; 
+
+        function startTypewriter() {
+            let i = 0;
+            const target = document.getElementById("typewriter");
+            target.innerHTML = ""; // Bersihkan teks sebelumnya
+            document.getElementById("p8-buttons").style.display = "none"; // Sembunyikan tombol
+            
+            function type() {
+                if (i < text.length) { 
+                    target.innerHTML += text.charAt(i);
+                    i++;
+                    target.scrollTop = target.scrollHeight; // Auto scroll ke bawah
+                    setTimeout(type, 35); // Kecepatan mengetik yang pas
+                } else {
+                    target.innerHTML += "\n<strong>Love you infinitely, gantengku! ૮₍´˶• . • ⑅ ₎ა</strong>";    
+                    target.scrollTop = target.scrollHeight;
+                    
+                    // Munculkan grup tombol (back & Balas WA) secara bersamaan
+                    const p8Btns = document.getElementById("p8-buttons");
+                    p8Btns.style.display = "flex";
+                }
+            } 
+            type();
+        }
+
+        // Fungsi Redirect ke WhatsApp
+        function balasWA() {
+            const phoneNumber = "6282331514441"; 
+            const message = "Makasih banyak yaa sayang buat kejutannya, aku juga sayang banget sama kamu! 🥰❤️";  
+            const encodedMessage = encodeURIComponent(message);
+            window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
+        }
+    </script>
+</body>
+</html>
